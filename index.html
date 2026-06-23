@@ -216,7 +216,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .dep-card{background:#ffffff;border-radius:20px;box-shadow:0 6px 32px rgba(0,0,0,0.09);padding:36px}
 .dep-ttl{font-size:1.6rem;font-weight:800;color:#111111;margin-bottom:5px}
 .dep-sb{color:#999999;font-size:0.88rem;margin-bottom:24px}
-.meth-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.meth-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:22px;max-width:300px;margin-left:auto;margin-right:auto}
 .meth{border:2px solid #e8e8e8;border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
 .meth:hover{border-color:#E8197A;background:#FFE0F0}
 .meth.sel{border-color:#E8197A;background:#FFE0F0}
@@ -226,6 +226,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .step-lbl{font-weight:700;font-size:0.88rem;color:#111111;margin-bottom:10px}
 .warn{background:#fff8e1;border:1px solid #fcd34d;border-radius:12px;padding:12px 14px;font-size:0.82rem;color:#78350f;display:flex;gap:9px;margin:14px 0;align-items:flex-start;line-height:1.5}
 .qr-ctr{text-align:center;margin:20px 0}
+.qr-ctr img{max-width:100%;border-radius:14px;border:3px solid #FFE0F0}
 .addr-box{background:#f5f5f5;border-radius:12px;padding:13px 15px;font-family:'Courier Prime',monospace;font-size:0.76rem;word-break:break-all;color:#111111;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
 .copy-btn{background:#E8197A;color:#ffffff;border:none;padding:6px 13px;border-radius:8px;font-size:0.73rem;font-weight:700;cursor:pointer;transition:all 0.18s;white-space:nowrap;flex-shrink:0}
 .copy-btn:hover{background:#FF4DA6}
@@ -288,6 +289,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   .time-g{grid-template-columns:repeat(3,1fr)}
   .otp-inputs{gap:8px}
   .otp-input{width:52px;height:62px;font-size:1.6rem}
+  .meth-grid{max-width:100%}
 }
 
 /* Admin Panel Styles */
@@ -432,7 +434,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   </footer>
 </div>
 
-<!-- LOGIN PAGE (HIDDEN ADMIN CREDENTIALS) -->
+<!-- LOGIN PAGE -->
 
 <div id="li-page" class="page">
   <div class="auth-wrap">
@@ -700,18 +702,13 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     </div>
     <div class="dep-body"><div class="dep-card">
       <div class="dep-ttl">Add Funds</div>
-      <div class="dep-sb">Add funds to your account using cryptocurrency.</div>
+      <div class="dep-sb">Add funds to your account using Bitcoin.</div>
       <div class="step-lbl">1. Choose Payment Method</div>
       <div class="meth-grid">
         <div class="meth sel" id="m-btc" onclick="selM('btc')">
           <div class="meth-ico">&#8383;</div>
           <div class="meth-nm">Bitcoin</div>
           <div class="meth-cd">BTC</div>
-        </div>
-        <div class="meth" id="m-eth" onclick="selM('eth')">
-          <div class="meth-ico">&#9674;</div>
-          <div class="meth-nm">Ethereum</div>
-          <div class="meth-cd">ETH</div>
         </div>
       </div>
       <div class="step-lbl">2. Enter Amount (USD)</div>
@@ -740,52 +737,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="amt-bt" id="d2btc">~ 0.00000000 BTC</div>
       </div>
       <div class="qr-ctr">
-        <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="border-radius:14px;border:3px solid #FFE0F0;display:block;margin:0 auto">
-          <rect width="200" height="200" fill="#ffffff"/>
-          <rect x="10" y="10" width="70" height="70" rx="6" fill="#E8197A"/>
-          <rect x="18" y="18" width="54" height="54" rx="3" fill="#ffffff"/>
-          <rect x="26" y="26" width="38" height="38" rx="2" fill="#E8197A"/>
-          <rect x="120" y="10" width="70" height="70" rx="6" fill="#E8197A"/>
-          <rect x="128" y="18" width="54" height="54" rx="3" fill="#ffffff"/>
-          <rect x="136" y="26" width="38" height="38" rx="2" fill="#E8197A"/>
-          <rect x="10" y="120" width="70" height="70" rx="6" fill="#E8197A"/>
-          <rect x="18" y="128" width="54" height="54" rx="3" fill="#ffffff"/>
-          <rect x="26" y="136" width="38" height="38" rx="2" fill="#E8197A"/>
-          <rect x="90" y="10" width="10" height="10" fill="#E8197A"/>
-          <rect x="104" y="10" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="24" width="10" height="10" fill="#E8197A"/>
-          <rect x="104" y="38" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="52" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="104" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="120" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="134" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="148" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="162" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="176" y="90" width="10" height="10" fill="#E8197A"/>
-          <rect x="120" y="104" width="10" height="10" fill="#E8197A"/>
-          <rect x="148" y="104" width="10" height="10" fill="#E8197A"/>
-          <rect x="176" y="104" width="10" height="10" fill="#E8197A"/>
-          <rect x="120" y="118" width="10" height="10" fill="#E8197A"/>
-          <rect x="134" y="118" width="10" height="10" fill="#E8197A"/>
-          <rect x="162" y="118" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="104" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="118" width="10" height="10" fill="#E8197A"/>
-          <rect x="104" y="118" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="132" width="10" height="10" fill="#E8197A"/>
-          <rect x="104" y="146" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="160" width="10" height="10" fill="#E8197A"/>
-          <rect x="90" y="176" width="10" height="10" fill="#E8197A"/>
-          <rect x="134" y="134" width="10" height="10" fill="#E8197A"/>
-          <rect x="148" y="148" width="10" height="10" fill="#E8197A"/>
-          <rect x="162" y="134" width="10" height="10" fill="#E8197A"/>
-          <rect x="176" y="148" width="10" height="10" fill="#E8197A"/>
-          <rect x="148" y="162" width="10" height="10" fill="#E8197A"/>
-          <rect x="162" y="176" width="10" height="10" fill="#E8197A"/>
-          <rect x="176" y="162" width="10" height="10" fill="#E8197A"/>
-          <circle cx="100" cy="100" r="14" fill="#E8197A"/>
-          <text x="100" y="104" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace" font-weight="bold">BTC</text>
-        </svg>
+        <img src="https://i.imgur.com/cSkZEey.jpeg" alt="Bitcoin QR Code" style="max-width:300px;width:100%;border-radius:14px;border:3px solid #FFE0F0;">
         <div style="font-size:0.78rem;color:#999999;margin-top:10px">Scan with your Bitcoin wallet app</div>
       </div>
       <div class="step-lbl">Bitcoin Address</div>
@@ -1080,70 +1032,73 @@ function doLogin() {
   var pw = document.getElementById('li-pw').value;
   if (!email || !pw) { toast('Please enter email and password.', 'err'); return; }
   
-  // Check for admin credentials (hardcoded check)
+  // Check for admin credentials
   if (email === 'admin@gmail.com' && pw === 'admin@123') {
     setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Signing In...', true);
     
-    // Try to sign in first
-    auth.signInWithEmailAndPassword(email, pw).then(function(cred) {
-      var uid = cred.user.uid;
-      // Ensure admin document exists
-      return db.collection('users').doc(uid).set({
-        firstName: 'Admin',
-        lastName: 'User',
-        email: 'admin@gmail.com',
-        phone: '',
-        country: '',
-        balance: 0,
-        transactions: [],
-        isAdmin: true,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    }).then(function() {
-      var user = auth.currentUser;
-      usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
-      bal = 0; txs = [];
-      isAdmin = true;
-      setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
-      setupDash();
-      showPg('admin-page');
-      loadAdminData();
-      toast('Welcome Admin! 👑', 'ok');
-    }).catch(function(err) {
-      // If admin doesn't exist, create the account
-      if (err.code === 'auth/user-not-found') {
-        auth.createUserWithEmailAndPassword(email, pw).then(function(cred) {
-          var uid = cred.user.uid;
-          return db.collection('users').doc(uid).set({
-            firstName: 'Admin',
-            lastName: 'User',
-            email: 'admin@gmail.com',
-            phone: '',
-            country: '',
-            balance: 0,
-            transactions: [],
-            isAdmin: true,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        }).then(function() {
-          var user = auth.currentUser;
-          usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
-          bal = 0; txs = [];
-          isAdmin = true;
-          setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
-          setupDash();
-          showPg('admin-page');
-          loadAdminData();
-          toast('Welcome Admin! 👑', 'ok');
-        }).catch(function(err) {
-          setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
-          toast('Error creating admin: ' + err.message, 'err');
-        });
-      } else {
+    auth.signInWithEmailAndPassword(email, pw)
+      .then(function(cred) {
+        var uid = cred.user.uid;
+        return db.collection('users').doc(uid).set({
+          firstName: 'Admin',
+          lastName: 'User',
+          email: 'admin@gmail.com',
+          phone: '',
+          country: '',
+          balance: 0,
+          transactions: [],
+          isAdmin: true,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      })
+      .then(function() {
+        var user = auth.currentUser;
+        usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
+        bal = 0; txs = [];
+        isAdmin = true;
         setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
-        toast('Admin login error: ' + err.message, 'err');
-      }
-    });
+        setupDash();
+        showPg('admin-page');
+        loadAdminData();
+        toast('Welcome Admin! 👑', 'ok');
+      })
+      .catch(function(err) {
+        if (err.code === 'auth/user-not-found') {
+          auth.createUserWithEmailAndPassword(email, pw)
+            .then(function(cred) {
+              var uid = cred.user.uid;
+              return db.collection('users').doc(uid).set({
+                firstName: 'Admin',
+                lastName: 'User',
+                email: 'admin@gmail.com',
+                phone: '',
+                country: '',
+                balance: 0,
+                transactions: [],
+                isAdmin: true,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            })
+            .then(function() {
+              var user = auth.currentUser;
+              usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
+              bal = 0; txs = [];
+              isAdmin = true;
+              setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+              setupDash();
+              showPg('admin-page');
+              loadAdminData();
+              toast('Welcome Admin! 👑', 'ok');
+            })
+            .catch(function(err) {
+              setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+              toast('Error creating admin: ' + err.message, 'err');
+            });
+        } else {
+          setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+          toast('Admin login error: ' + err.message, 'err');
+        }
+      });
     return;
   }
   
