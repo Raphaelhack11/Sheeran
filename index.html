@@ -1,0 +1,2113 @@
+<!DOCTYPE html><html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ed Sheeran - Loop Tour 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;overflow-x:hidden}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.88)}to{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes strip{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(60px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(255,255,255,0.97);backdrop-filter:blur(10px);border-bottom:1px solid #e8e8e8;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;transition:all 0.3s}
+nav.scrolled{padding:10px 28px;box-shadow:0 2px 20px rgba(0,0,0,0.08)}
+.nav-logo{font-family:'Courier Prime',monospace;font-size:1.45rem;font-weight:700;color:#E8197A;cursor:pointer;letter-spacing:-0.5px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-lo{background:transparent;border:2px solid #E8197A;color:#E8197A;padding:8px 18px;border-radius:50px;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s}
+.btn-lo:hover{background:#E8197A;color:#ffffff}
+.btn-su{background:#E8197A;border:2px solid #E8197A;color:#ffffff;padding:8px 18px;border-radius:50px;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s}
+.btn-su:hover{background:#FF4DA6;border-color:#FF4DA6;box-shadow:0 4px 16px rgba(232,25,122,0.4)}
+.ham{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:5px}
+.ham span{display:block;width:22px;height:2px;background:#E8197A;border-radius:2px;transition:all 0.3s}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mmenu{position:fixed;inset:0;background:#ffffff;z-index:490;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;transform:translateY(-110%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)}
+.mmenu.open{transform:translateY(0)}
+.mm-lnk{font-family:'Courier Prime',monospace;font-size:2.4rem;font-weight:700;color:#E8197A;background:none;border:none;cursor:pointer;transition:letter-spacing 0.2s,color 0.2s}
+.mm-lnk:hover{letter-spacing:4px;color:#FF4DA6}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:70px;background:#0a0a0a}
+.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1400&q=80') center/cover no-repeat;opacity:0.35;z-index:0}
+.hero-inner{position:relative;z-index:1;text-align:center;padding:40px 24px;animation:fadeUp 0.7s ease}
+.hero-logo-wrap{background:#E8197A;width:min(420px,82vw);margin:0 auto 28px;border-radius:18px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 48px rgba(232,25,122,0.5)}
+.hero-logo-text{font-family:'Courier Prime',monospace;font-size:clamp(3.5rem,14vw,7rem);font-weight:700;color:#0a0a0a;line-height:0.85;letter-spacing:-4px}
+.hero-logo-sub{font-family:'Courier Prime',monospace;font-size:clamp(1rem,3vw,1.6rem);color:#0a0a0a;letter-spacing:8px;margin-top:8px;font-weight:400}
+.hero-tagline{font-family:'Courier Prime',monospace;font-size:clamp(0.78rem,2vw,1rem);color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-bottom:36px}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-hp{background:#E8197A;color:#ffffff;border:none;padding:15px 38px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.25s}
+.btn-hp:hover{background:#FF4DA6;transform:translateY(-3px);box-shadow:0 8px 28px rgba(232,25,122,0.5)}
+.btn-ho{background:transparent;color:#ffffff;border:2px solid rgba(255,255,255,0.6);padding:15px 38px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.25s}
+.btn-ho:hover{background:rgba(255,255,255,0.15);border-color:#ffffff;transform:translateY(-3px)}
+.strip{background:#E8197A;padding:14px 0;overflow:hidden}
+.strip-track{display:flex;width:max-content;animation:strip 30s linear infinite}
+.strip-track:hover{animation-play-state:paused}
+.s-item{display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(255,255,255,0.25);white-space:nowrap;color:#ffffff;font-size:0.875rem;font-weight:500}
+.s-date{font-family:'Courier Prime',monospace;font-weight:700;font-size:1rem}
+.s-btn{background:#ffffff;color:#E8197A;border:none;padding:4px 14px;border-radius:50px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.18s;flex-shrink:0}
+.s-btn:hover{background:#111111;color:#ffffff}
+.about{padding:90px 24px;background:#ffffff}
+.about-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-img{width:100%;height:500px;object-fit:cover;border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,0.12)}
+.sec-label{font-family:'Courier Prime',monospace;color:#E8197A;font-size:0.73rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px}
+.sec-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:#111111;line-height:1.1;margin-bottom:20px}
+.about-text p{font-size:1rem;color:#555555;line-height:1.85;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.stat{background:#f5f5f5;border-radius:14px;padding:18px;text-align:center;transition:transform 0.2s}
+.stat:hover{transform:translateY(-4px)}
+.stat-n{font-family:'Courier Prime',monospace;font-size:1.9rem;font-weight:700;color:#E8197A}
+.stat-l{font-size:0.73rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.tour-sec{background:#f5f5f5;padding:90px 24px}
+.tour-wrap{max-width:860px;margin:0 auto}
+.tour-hd{text-align:center;margin-bottom:48px}
+.tc{background:#ffffff;border-radius:14px;padding:20px 24px;margin-bottom:10px;display:flex;align-items:center;gap:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
+.tc:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.1)}
+.tc-date{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.3rem;color:#E8197A;min-width:72px;text-align:center;line-height:1;flex-shrink:0}
+.tc-date small{display:block;font-size:0.65rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.tc-info{flex:1;min-width:0}
+.tc-venue{font-weight:700;font-size:0.95rem;color:#111111}
+.tc-city{font-size:0.82rem;color:#999999;margin-top:2px}
+.tc-sup{font-size:0.78rem;color:#bbbbbb;margin-top:3px}
+.badge-sold{background:#fee2e2;color:#dc2626;font-size:0.7rem;font-weight:700;padding:5px 12px;border-radius:50px;white-space:nowrap;flex-shrink:0}
+.btn-tix{background:#E8197A;color:#ffffff;border:none;padding:10px 22px;border-radius:50px;font-weight:700;font-size:0.82rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
+.btn-tix:hover{background:#FF4DA6;transform:scale(1.06)}
+footer{background:#111111;color:#ffffff;padding:56px 24px 28px;text-align:center}
+.ft-logo{font-family:'Courier Prime',monospace;font-size:1.9rem;font-weight:700;color:#E8197A;margin-bottom:20px}
+.ft-nav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.ft-nav a{color:#666666;text-decoration:none;font-size:0.85rem;transition:color 0.2s;background:none;border:none;cursor:pointer}
+.ft-nav a:hover{color:#E8197A}
+.ft-soc{display:flex;justify-content:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.ft-soc a{color:#555555;text-decoration:none;width:36px;height:36px;border-radius:50%;border:1px solid #333333;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s}
+.ft-soc a:hover{border-color:#E8197A;color:#E8197A}
+.ft-copy{font-size:0.78rem;color:#444444;border-top:1px solid #222222;padding-top:20px}
+.auth-wrap{min-height:100vh;background:#f9f9fb;display:flex;align-items:center;justify-content:center;padding:90px 20px 40px}
+.auth-card{background:#ffffff;border-radius:22px;box-shadow:0 8px 40px rgba(0,0,0,0.1);padding:44px 40px;width:100%;max-width:500px;animation:scaleIn 0.35s ease}
+.a-logo{font-family:'Courier Prime',monospace;font-size:1.3rem;font-weight:700;color:#E8197A;cursor:pointer;margin-bottom:24px;display:inline-block}
+.a-title{font-size:1.75rem;font-weight:800;color:#111111;margin-bottom:6px}
+.a-sub{color:#999999;font-size:0.88rem;margin-bottom:28px}
+.fg{margin-bottom:18px}
+.fl{display:block;font-size:0.82rem;font-weight:600;color:#111111;margin-bottom:7px}
+.fi{width:100%;padding:12px 15px;border:2px solid #e8e8e8;border-radius:12px;font-size:0.93rem;outline:none;transition:border-color 0.2s;font-family:inherit;background:#ffffff;color:#111111}
+.fi:focus{border-color:#E8197A}
+select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:#ffffff;padding-right:36px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pw-w{position:relative}
+.pw-w .fi{padding-right:44px}
+.pw-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#999999;font-size:1rem}
+.str-bar{height:4px;background:#e8e8e8;border-radius:4px;margin-top:8px;overflow:hidden}
+.str-fill{height:100%;border-radius:4px;transition:all 0.3s;width:0}
+.str-txt{font-size:0.73rem;margin-top:5px;font-weight:600}
+.btn-sub{width:100%;padding:15px;background:#E8197A;color:#ffffff;border:none;border-radius:12px;font-size:0.98rem;font-weight:700;cursor:pointer;transition:all 0.22s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px}
+.btn-sub:hover:not(:disabled){background:#FF4DA6;transform:translateY(-1px);box-shadow:0 4px 18px rgba(232,25,122,0.35)}
+.btn-sub:disabled{opacity:0.7;cursor:default;transform:none}
+.spn{width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#ffffff;border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+.a-sw{text-align:center;margin-top:18px;font-size:0.88rem;color:#999999}
+.a-sw button{color:#E8197A;font-weight:600;background:none;border:none;cursor:pointer;font-size:0.88rem}
+.a-sw button:hover{text-decoration:underline}
+.otp-wrap{min-height:100vh;background:#f9f9fb;display:flex;align-items:center;justify-content:center;padding:90px 20px 40px}
+.otp-card{background:#ffffff;border-radius:22px;box-shadow:0 8px 40px rgba(0,0,0,0.1);padding:44px 40px;width:100%;max-width:440px;text-align:center;animation:scaleIn 0.35s ease}
+.otp-ico{font-size:3rem;margin-bottom:16px}
+.otp-title{font-size:1.6rem;font-weight:800;color:#111111;margin-bottom:8px}
+.otp-sub{font-size:0.88rem;color:#999999;margin-bottom:8px;line-height:1.6}
+.otp-email-disp{font-weight:700;color:#E8197A;font-size:0.9rem;margin-bottom:28px;word-break:break-all}
+.otp-inputs{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
+.otp-input{width:64px;height:72px;border:2px solid #e8e8e8;border-radius:14px;text-align:center;font-size:2rem;font-weight:700;font-family:'Courier Prime',monospace;color:#111111;outline:none;transition:all 0.2s;background:#ffffff}
+.otp-input:focus{border-color:#E8197A;box-shadow:0 0 0 4px rgba(232,25,122,0.1)}
+.otp-input.filled{border-color:#E8197A;background:#FFE0F0}
+.otp-resend{font-size:0.82rem;color:#999999;margin-top:16px}
+.otp-resend button{color:#E8197A;background:none;border:none;cursor:pointer;font-weight:600;font-size:0.82rem}
+.otp-resend button:disabled{color:#cccccc;cursor:default}
+#dash-page{background:#f5f5f5;padding-top:0}
+.d-top{position:fixed;top:0;left:0;right:0;z-index:500;background:#ffffff;border-bottom:1px solid #e8e8e8;padding:13px 22px;display:flex;align-items:center;justify-content:space-between}
+.d-brand{font-family:'Courier Prime',monospace;font-size:1.3rem;font-weight:700;color:#E8197A}
+.d-usr{display:flex;align-items:center;gap:10px}
+.d-av{width:34px;height:34px;border-radius:50%;background:#E8197A;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.88rem;flex-shrink:0}
+.d-uname{font-size:0.85rem;font-weight:600;color:#111111}
+.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:480;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.sb-ov.open{opacity:1;pointer-events:all}
+.sidebar{position:fixed;left:0;top:60px;bottom:0;width:252px;background:#ffffff;border-right:1px solid #e8e8e8;z-index:490;transform:translateX(-100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto}
+.sidebar.open{transform:translateX(0)}
+.sb-top{padding:20px 20px 14px;border-bottom:1px solid #e8e8e8}
+.sb-brand{font-family:'Courier Prime',monospace;font-size:1.1rem;font-weight:700;color:#E8197A}
+.sb-sub2{font-size:0.73rem;color:#999999;margin-top:2px}
+.sb-it{display:flex;align-items:center;gap:13px;padding:13px 20px;font-size:0.92rem;font-weight:500;color:#555555;cursor:pointer;transition:all 0.18s;border-left:3px solid transparent}
+.sb-it:hover{background:#FFE0F0;color:#E8197A;border-left-color:#E8197A}
+.sb-it.active{background:#FFE0F0;color:#E8197A;border-left-color:#E8197A}
+.sb-out{position:absolute;bottom:0;left:0;right:0;border-top:1px solid #e8e8e8}
+.d-content{padding:72px 20px 40px;max-width:880px;margin:0 auto}
+.d-hello{margin-bottom:26px}
+.d-hello h1{font-size:1.7rem;font-weight:800;color:#111111}
+.d-hello p{color:#999999;margin-top:4px;font-size:0.9rem}
+.bal-card{background:linear-gradient(135deg,#E8197A 0%,#b01260 100%);border-radius:20px;padding:28px;color:#ffffff;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(232,25,122,0.28)}
+.bal-card::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:rgba(255,255,255,0.07);border-radius:50%}
+.bal-lbl{font-size:0.75rem;opacity:0.7;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1}
+.bal-amt{font-family:'Courier Prime',monospace;font-size:2.6rem;font-weight:700;letter-spacing:-1px;position:relative;z-index:1}
+.bal-btns{display:flex;gap:10px;margin-top:20px;position:relative;z-index:1;flex-wrap:wrap}
+.bal-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#ffffff;padding:9px 22px;border-radius:50px;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s}
+.bal-btn:hover{background:rgba(255,255,255,0.35)}
+.sec-hd{font-size:1.2rem;font-weight:800;color:#111111;margin:32px 0 14px;display:flex;align-items:center;gap:8px}
+.dt-grid{display:grid;gap:10px}
+.dt-c{background:#ffffff;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
+.dt-c:hover{box-shadow:0 6px 22px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.dt-d{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.15rem;color:#E8197A;min-width:60px;text-align:center;line-height:1;flex-shrink:0}
+.dt-d small{display:block;font-size:0.62rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.dt-inf{flex:1;min-width:0}
+.dt-v{font-weight:700;font-size:0.9rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt-ci{font-size:0.78rem;color:#999999;margin-top:2px}
+.dt-sp{font-size:0.75rem;color:#cccccc;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn-buy{background:#E8197A;color:#ffffff;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:0.78rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
+.btn-buy:hover{background:#FF4DA6;transform:scale(1.06)}
+.btn-sold{background:#f3f4f6;color:#9ca3af;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:0.78rem;white-space:nowrap;flex-shrink:0}
+.h-empty{text-align:center;padding:48px 20px;color:#999999}
+.h-empty .ico{font-size:2.8rem;margin-bottom:12px}
+.tx-c{background:#ffffff;border-radius:14px;padding:15px 18px;margin-bottom:8px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.tx-ico2{width:38px;height:38px;border-radius:50%;background:#FFE0F0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.tx-inf{flex:1}
+.tx-tp{font-weight:700;font-size:0.88rem;color:#111111}
+.tx-dt{font-size:0.76rem;color:#999999}
+.tx-am{font-family:'Courier Prime',monospace;font-weight:700;font-size:0.95rem;flex-shrink:0}
+.tx-cr{color:#16a34a}
+.tx-db{color:#dc2626}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.28s}
+.ov.open{opacity:1;pointer-events:all}
+.modal{background:#ffffff;border-radius:22px;padding:32px;width:100%;max-width:420px;position:relative;transform:scale(0.9);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);box-shadow:0 12px 50px rgba(0,0,0,0.18)}
+.ov.open .modal{transform:scale(1)}
+.mx{position:absolute;top:14px;right:14px;background:#f5f5f5;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s}
+.mx:hover{background:#e8e8e8}
+.m-tag{font-size:0.72rem;color:#E8197A;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.m-ttl{font-size:1.3rem;font-weight:800;color:#111111;margin-bottom:3px}
+.m-sb{font-size:0.83rem;color:#999999;margin-bottom:18px}
+.m-typ{background:#f5f5f5;border-radius:10px;padding:11px 14px;font-size:0.83rem;color:#555555;margin-bottom:14px}
+.m-prc{font-family:'Courier Prime',monospace;font-size:1.9rem;font-weight:700;color:#E8197A;margin-bottom:18px}
+.qty-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.qty-lbl{font-size:0.83rem;color:#999999;font-weight:500}
+.qty-ctrl{display:flex;align-items:center;border:2px solid #e8e8e8;border-radius:50px;overflow:hidden}
+.qty-b{background:#ffffff;border:none;width:34px;height:34px;cursor:pointer;font-size:1rem;font-weight:700;color:#111111;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.qty-b:hover{background:#FFE0F0;color:#E8197A}
+.qty-n{width:36px;text-align:center;font-weight:700;font-family:'Courier Prime',monospace;font-size:1.05rem}
+.tot-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid #e8e8e8;font-weight:700}
+.tot-v{font-size:1.25rem;color:#E8197A;font-family:'Courier Prime',monospace}
+.btn-mg{width:100%;padding:15px;background:#E8197A;color:#ffffff;border:none;border-radius:12px;font-size:0.98rem;font-weight:700;cursor:pointer;transition:all 0.22s;margin-top:18px}
+.btn-mg:hover{background:#FF4DA6;transform:translateY(-1px);box-shadow:0 4px 18px rgba(232,25,122,0.35)}
+.sm-ico{font-size:3.5rem;text-align:center;margin-bottom:14px}
+.sm-ttl{font-size:1.4rem;font-weight:800;color:#111111;text-align:center;margin-bottom:8px}
+.sm-sb{font-size:0.88rem;color:#999999;text-align:center;line-height:1.65}
+.t-box{position:fixed;top:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#ffffff;border-radius:12px;padding:13px 18px;box-shadow:0 4px 22px rgba(0,0,0,0.14);display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:500;min-width:220px;max-width:340px;animation:toastIn 0.3s ease;border-left:4px solid #E8197A;pointer-events:all}
+.toast.ok{border-left-color:#16a34a}
+.toast.err{border-left-color:#dc2626}
+.dep-pg{min-height:100vh;background:#f5f5f5}
+.dep-top{background:#ffffff;border-bottom:1px solid #e8e8e8;padding:14px 22px;display:flex;align-items:center;gap:14px}
+.dep-bk{background:none;border:none;cursor:pointer;font-size:1.3rem;color:#E8197A;padding:2px 6px;font-weight:700}
+.dep-t{font-size:1.2rem;font-weight:800;color:#111111}
+.dep-body{padding:28px 20px;max-width:500px;margin:0 auto}
+.dep-card{background:#ffffff;border-radius:20px;box-shadow:0 6px 32px rgba(0,0,0,0.09);padding:36px}
+.dep-ttl{font-size:1.6rem;font-weight:800;color:#111111;margin-bottom:5px}
+.dep-sb{color:#999999;font-size:0.88rem;margin-bottom:24px}
+.meth-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.meth{border:2px solid #e8e8e8;border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.meth:hover{border-color:#E8197A;background:#FFE0F0}
+.meth.sel{border-color:#E8197A;background:#FFE0F0}
+.meth-ico{font-size:1.9rem;margin-bottom:5px}
+.meth-nm{font-weight:700;font-size:0.88rem;color:#111111}
+.meth-cd{font-size:0.73rem;color:#999999}
+.step-lbl{font-weight:700;font-size:0.88rem;color:#111111;margin-bottom:10px}
+.warn{background:#fff8e1;border:1px solid #fcd34d;border-radius:12px;padding:12px 14px;font-size:0.82rem;color:#78350f;display:flex;gap:9px;margin:14px 0;align-items:flex-start;line-height:1.5}
+.qr-ctr{text-align:center;margin:20px 0}
+.addr-box{background:#f5f5f5;border-radius:12px;padding:13px 15px;font-family:'Courier Prime',monospace;font-size:0.76rem;word-break:break-all;color:#111111;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
+.copy-btn{background:#E8197A;color:#ffffff;border:none;padding:6px 13px;border-radius:8px;font-size:0.73rem;font-weight:700;cursor:pointer;transition:all 0.18s;white-space:nowrap;flex-shrink:0}
+.copy-btn:hover{background:#FF4DA6}
+.net-g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 20px;text-align:center}
+.net-it{background:#f5f5f5;border-radius:10px;padding:11px 8px}
+.net-lb{font-size:0.68rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.net-vl{font-weight:700;font-size:0.82rem;color:#111111}
+.amt-hl{background:#FFE0F0;border-radius:14px;padding:18px;text-align:center;margin-bottom:20px}
+.amt-lb{font-size:0.73rem;color:#999999;text-transform:uppercase;letter-spacing:2px;margin-bottom:5px}
+.amt-vl{font-family:'Courier Prime',monospace;font-size:1.9rem;font-weight:700;color:#E8197A}
+.amt-bt{font-size:0.78rem;color:#999999;margin-top:4px}
+.ld-scr{position:fixed;inset:0;background:#ffffff;z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.ld-ring{width:52px;height:52px;border:4px solid #FFE0F0;border-top-color:#E8197A;border-radius:50%;animation:spin 1s linear infinite}
+.ld-t{font-size:1.1rem;font-weight:700;color:#111111}
+.ld-s{font-size:0.85rem;color:#999999}
+.ld-prog{width:240px;height:6px;background:#FFE0F0;border-radius:6px;overflow:hidden;margin-top:6px}
+.ld-prog-fill{height:100%;background:#E8197A;border-radius:6px;width:0;transition:width 1s linear}
+.mg-hero{background:linear-gradient(135deg,#E8197A 0%,#b01260 100%);border-radius:18px;padding:26px;color:#ffffff;text-align:center;margin-bottom:26px}
+.mg-h-ico{font-size:1.9rem;margin-bottom:8px}
+.mg-h-ttl{font-size:1.3rem;font-weight:800;font-family:'Courier Prime',monospace;margin-bottom:6px}
+.mg-h-sb{font-size:0.85rem;opacity:0.85}
+.mg-card{background:#ffffff;border-radius:18px;box-shadow:0 4px 22px rgba(0,0,0,0.08);padding:28px}
+.cal-nav2{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-nb{background:none;border:1px solid #e8e8e8;border-radius:8px;padding:5px 12px;cursor:pointer;color:#111111;font-size:0.88rem;transition:all 0.18s}
+.cal-nb:hover{border-color:#E8197A;color:#E8197A}
+.cal-ml{font-weight:700;font-size:0.95rem;color:#111111}
+.cal-hd{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px}
+.cal-hl{text-align:center;font-size:0.68rem;font-weight:700;color:#999999;padding:4px;text-transform:uppercase}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cd{text-align:center;padding:7px 3px;border-radius:8px;font-size:0.82rem;cursor:pointer;transition:all 0.18s;font-weight:500;color:#111111}
+.cd:hover:not(.cb):not(.ce){background:#FFE0F0;color:#E8197A}
+.cd.cs{background:#E8197A;color:#ffffff}
+.cd.cb{background:#fee2e2;color:#fca5a5;cursor:not-allowed;text-decoration:line-through}
+.cd.ce{cursor:default;visibility:hidden}
+.cd.ct{border:2px solid #E8197A}
+.cal-leg{display:flex;gap:14px;margin-top:10px;font-size:0.73rem;color:#999999;flex-wrap:wrap}
+.cal-leg span{display:flex;align-items:center;gap:4px}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.time-g{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
+.ts{border:2px solid #e8e8e8;border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;font-size:0.78rem;font-weight:600;transition:all 0.18s;color:#555555}
+.ts:hover{border-color:#E8197A;color:#E8197A;background:#FFE0F0}
+.ts.sel{background:#E8197A;color:#ffffff;border-color:#E8197A}
+.fee-body{padding:40px 20px;max-width:480px;margin:0 auto;text-align:center}
+.fee-ico{font-size:2.8rem;margin-bottom:14px}
+.fee-ttl{font-size:1.5rem;font-weight:800;color:#111111;margin-bottom:10px}
+.fee-txt{color:#555555;line-height:1.75;margin-bottom:28px;font-size:0.95rem}
+.fee-box{background:#FFE0F0;border-radius:16px;padding:24px;margin-bottom:28px}
+.fee-lbl{font-size:0.73rem;color:#999999;text-transform:uppercase;letter-spacing:2px;margin-bottom:5px}
+.fee-amt{font-size:2.6rem;font-weight:800;color:#E8197A;font-family:'Courier Prime',monospace}
+.fee-nt{font-size:0.82rem;color:#999999;margin-top:5px}
+.fee-bal{font-size:0.8rem;color:#999999;margin-top:14px}
+@media(max-width:700px){
+  .about-grid{grid-template-columns:1fr}
+  .about-img{height:280px}
+  .frow{grid-template-columns:1fr}
+  .auth-card,.otp-card{padding:28px 20px}
+  .dep-card,.mg-card{padding:24px 18px}
+  .tc{flex-wrap:wrap}
+  .dt-c{flex-wrap:wrap}
+  .time-g{grid-template-columns:repeat(3,1fr)}
+  .otp-inputs{gap:8px}
+  .otp-input{width:52px;height:62px;font-size:1.6rem}
+}
+
+/* Admin Panel Styles */
+.admin-container{max-width:1200px;margin:0 auto;padding:80px 20px 40px}
+.admin-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:2px solid #e8e8e8;margin-bottom:30px;flex-wrap:wrap;gap:10px}
+.admin-back{background:none;border:none;color:#E8197A;font-weight:700;font-size:0.95rem;cursor:pointer}
+.admin-back:hover{text-decoration:underline}
+.admin-user{background:#E8197A;color:#fff;padding:8px 20px;border-radius:50px;font-weight:700;font-size:0.85rem}
+.admin-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:30px}
+.admin-stat-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.08);text-align:center}
+.admin-stat-icon{font-size:2rem;margin-bottom:8px}
+.admin-stat-number{font-family:'Courier Prime',monospace;font-size:2rem;font-weight:700;color:#E8197A}
+.admin-stat-label{color:#999;font-size:0.85rem;margin-top:4px}
+.admin-nav{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;border-bottom:2px solid #e8e8e8;padding-bottom:12px}
+.admin-nav-btn{background:none;border:none;padding:10px 20px;border-radius:8px;font-weight:600;font-size:0.9rem;color:#666;cursor:pointer;transition:all 0.2s}
+.admin-nav-btn:hover{background:#FFE0F0;color:#E8197A}
+.admin-nav-btn.active{background:#E8197A;color:#fff}
+.admin-content{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.admin-tab{display:none}
+.admin-tab.active{display:block}
+.admin-tab-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.admin-tab-header h2{font-size:1.2rem;font-weight:800;color:#111}
+.admin-table-wrap{overflow-x:auto}
+.admin-table{width:100%;border-collapse:collapse;font-size:0.9rem}
+.admin-table thead{background:#f5f5f5}
+.admin-table th{text-align:left;padding:12px 14px;font-weight:600;color:#666;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px}
+.admin-table td{padding:12px 14px;border-bottom:1px solid #f0f0f0;color:#333}
+.admin-table tr:hover{background:#fafafa}
+.admin-btn{padding:8px 16px;border:none;border-radius:8px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s}
+.admin-btn-primary{background:#E8197A;color:#fff}
+.admin-btn-primary:hover{background:#FF4DA6}
+.admin-btn-success{background:#16a34a;color:#fff}
+.admin-btn-success:hover{background:#15803d}
+.admin-btn-danger{background:#dc2626;color:#fff}
+.admin-btn-danger:hover{background:#b91c1c}
+.admin-btn-warning{background:#f59e0b;color:#fff}
+.admin-btn-warning:hover{background:#d97706}
+.admin-badge{padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600}
+.admin-badge-success{background:#dcfce7;color:#16a34a}
+.admin-badge-danger{background:#fee2e2;color:#dc2626}
+.admin-badge-warning{background:#fef3c7;color:#f59e0b}
+.status-badge{padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600}
+.status-active{background:#dcfce7;color:#16a34a}
+.status-pending{background:#fef3c7;color:#f59e0b}
+.status-completed{background:#dbeafe;color:#3b82f6}
+@media(max-width:700px){.admin-stats-grid{grid-template-columns:1fr 1fr}.admin-nav-btn{padding:8px 14px;font-size:0.8rem}}
+</style>
+</head>
+<body>
+
+<div class="t-box" id="tBox"></div>
+
+<div class="ld-scr" id="ldScr">
+  <div class="ld-ring"></div>
+  <div class="ld-t" id="ldT">Processing...</div>
+  <div class="ld-s" id="ldS">Please wait</div>
+  <div class="ld-prog"><div class="ld-prog-fill" id="ldFill"></div></div>
+</div>
+
+<!-- MOBILE MENU -->
+
+<div class="mmenu" id="mmenu">
+  <button class="mm-lnk" onclick="goSec('about')">About</button>
+  <button class="mm-lnk" onclick="goSec('tour')">Tour</button>
+  <button class="mm-lnk" onclick="showPg('su-page')">Sign Up</button>
+  <button class="mm-lnk" onclick="showPg('li-page')">Log In</button>
+</div>
+
+<!-- NAV -->
+
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPg('home-page')">Ed Sheeran</div>
+  <div class="nav-right">
+    <button class="btn-lo" onclick="showPg('li-page')">Log In</button>
+    <button class="btn-su" onclick="showPg('su-page')">Sign Up</button>
+    <button class="ham" id="hamBtn" onclick="togMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+
+<div id="home-page" class="page active">
+  <section class="hero" id="heroSec">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-logo-wrap">
+        <div class="hero-logo-text">LOOP</div>
+        <div class="hero-logo-sub">TOUR</div>
+      </div>
+      <p class="hero-tagline">North &amp; South America 2026</p>
+      <div class="hero-btns">
+        <button class="btn-hp" onclick="goSec('tour')">Get Tickets</button>
+        <button class="btn-ho" onclick="goSec('about')">About Ed</button>
+      </div>
+    </div>
+  </section>
+  <div class="strip"><div class="strip-track" id="stripTrack"></div></div>
+  <section class="about" id="about">
+    <div class="about-grid">
+      <div><img src="https://images.unsplash.com/photo-1501386761578-eaa54b3c5296?w=800&q=80" class="about-img" alt="Concert"></div>
+      <div>
+        <div class="sec-label">About Ed</div>
+        <h2 class="sec-title">The Loop Never Stops</h2>
+        <p>Edward Christopher Sheeran MBE is a British singer-songwriter who rose to global fame with his debut album <em>+</em> (Plus) in 2011. Known for his remarkable ability to loop guitar, vocals, and beatbox live on stage, Ed creates full layered soundscapes entirely on his own.</p>
+        <p>With albums like <em>&times;</em> (Multiply), <em>&divide;</em> (Divide), <em>No.6 Collaborations Project</em>, <em>=</em> (Equals), and <em>Autumn Variations</em>, Ed has sold over 150 million records worldwide, making him one of the best-selling music artists of all time.</p>
+        <p>The <strong>Loop Tour</strong> is his most ambitious live production yet &mdash; a celebration of the loop pedal technique that built his career, now reimagined at stadium scale across two continents.</p>
+        <div class="stats">
+          <div class="stat"><div class="stat-n">150M+</div><div class="stat-l">Records Sold</div></div>
+          <div class="stat"><div class="stat-n">4x</div><div class="stat-l">Grammy Awards</div></div>
+          <div class="stat"><div class="stat-n">100+</div><div class="stat-l">Countries Toured</div></div>
+          <div class="stat"><div class="stat-n">33</div><div class="stat-l">Loop Tour Dates</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="tour-sec" id="tour">
+    <div class="tour-wrap">
+      <div class="tour-hd">
+        <div class="sec-label" style="text-align:center">Loop Tour 2026</div>
+        <h2 class="sec-title" style="text-align:center">Tour Dates</h2>
+      </div>
+      <div id="tourList"></div>
+    </div>
+  </section>
+  <footer>
+    <div class="ft-logo">Ed Sheeran</div>
+    <div class="ft-nav">
+      <a onclick="goSec('about')">About</a>
+      <a onclick="goSec('tour')">Tour</a>
+      <a onclick="showPg('su-page')">Sign Up</a>
+      <a onclick="showPg('li-page')">Log In</a>
+    </div>
+    <div class="ft-soc">
+      <a href="https://x.com/edsheeran" target="_blank">X</a>
+      <a href="https://instagram.com/teddysphotos" target="_blank">IG</a>
+      <a href="https://facebook.com/edsheeran" target="_blank">FB</a>
+      <a href="https://tiktok.com/@edsheeran" target="_blank">TT</a>
+      <a href="https://youtube.com/edsheeran" target="_blank">YT</a>
+      <a href="https://soundcloud.com/edsheeran" target="_blank">SC</a>
+    </div>
+    <div class="ft-copy">&copy; 2026 Gingerbread Man Records &amp; Warner Music UK Limited</div>
+  </footer>
+</div>
+
+<!-- LOGIN PAGE (HIDDEN ADMIN CREDENTIALS) -->
+
+<div id="li-page" class="page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="a-logo" onclick="showPg('home-page')">Ed Sheeran</div>
+      <h2 class="a-title">Welcome Back</h2>
+      <p class="a-sub">Sign in to your account.</p>
+      <div class="fg"><label class="fl">Email</label><input type="email" id="li-em" class="fi" placeholder="john@example.com"></div>
+      <div class="fg">
+        <label class="fl">Password</label>
+        <div class="pw-w">
+          <input type="password" id="li-pw" class="fi" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
+          <button class="pw-eye" type="button" onclick="togPw('li-pw',this)">&#128065;</button>
+        </div>
+      </div>
+      <button class="btn-sub" id="liBtn" onclick="doLogin()">
+        <span id="liTxt">Log In</span>
+        <div class="spn" id="liSpn" style="display:none"></div>
+      </button>
+      <p class="a-sw">No account? <button onclick="showPg('su-page')">Sign Up</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP PAGE -->
+
+<div id="su-page" class="page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="a-logo" onclick="showPg('home-page')">Ed Sheeran</div>
+      <h2 class="a-title">Create Account</h2>
+      <p class="a-sub">Join to purchase tickets and more.</p>
+      <div class="frow">
+        <div class="fg"><label class="fl">First Name</label><input type="text" id="su-first" class="fi" placeholder="John"></div>
+        <div class="fg"><label class="fl">Last Name</label><input type="text" id="su-last" class="fi" placeholder="Doe"></div>
+      </div>
+      <div class="fg"><label class="fl">Email</label><input type="email" id="su-email" class="fi" placeholder="john@example.com" required></div>
+      <div class="fg"><label class="fl">Phone</label><input type="tel" id="su-phone" class="fi" placeholder="+1 555 000 0000"></div>
+      <div class="fg">
+        <label class="fl">Country</label>
+        <select class="fi" id="su-country" onchange="loadStates()"><option value="">Select country</option></select>
+      </div>
+      <div class="fg" id="stWrap" style="display:none">
+        <label class="fl">State / Province</label>
+        <select class="fi" id="su-state"><option value="">Select state</option></select>
+      </div>
+      <div class="fg">
+        <label class="fl">Password</label>
+        <div class="pw-w">
+          <input type="password" id="su-pw" class="fi" placeholder="Create a strong password" oninput="chkPw(this.value)">
+          <button class="pw-eye" type="button" onclick="togPw('su-pw',this)">&#128065;</button>
+        </div>
+        <div class="str-bar"><div class="str-fill" id="strFill"></div></div>
+        <div class="str-txt" id="strTxt"></div>
+      </div>
+      <button class="btn-sub" id="suBtn" onclick="doSignup()">
+        <span id="suTxt">Create Account</span>
+        <div class="spn" id="suSpn" style="display:none"></div>
+      </button>
+      <p class="a-sw">Already have an account? <button onclick="showPg('li-page')">Log In</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- OTP PAGE -->
+
+<div id="otp-page" class="page">
+  <div class="otp-wrap">
+    <div class="otp-card">
+      <div class="otp-ico">&#128140;</div>
+      <h2 class="otp-title">Check Your Email</h2>
+      <p class="otp-sub">We sent a 4-digit verification code to</p>
+      <div class="otp-email-disp" id="otpEmailDisp"></div>
+      <div class="otp-inputs">
+        <input class="otp-input" id="o1" maxlength="1" type="text" inputmode="numeric" oninput="otpMove(this,'o2')" onkeydown="otpBack(event,this,'')">
+        <input class="otp-input" id="o2" maxlength="1" type="text" inputmode="numeric" oninput="otpMove(this,'o3')" onkeydown="otpBack(event,this,'o1')">
+        <input class="otp-input" id="o3" maxlength="1" type="text" inputmode="numeric" oninput="otpMove(this,'o4')" onkeydown="otpBack(event,this,'o2')">
+        <input class="otp-input" id="o4" maxlength="1" type="text" inputmode="numeric" oninput="otpLast(this)" onkeydown="otpBack(event,this,'o3')">
+      </div>
+      <button class="btn-sub" id="otpBtn" onclick="verifyOTP()">
+        <span id="otpTxt">Verify Code</span>
+        <div class="spn" id="otpSpn" style="display:none"></div>
+      </button>
+      <div class="otp-resend" id="otpResendWrap">
+        Didn't receive it? <button id="resendBtn" onclick="resendCode()" disabled>Resend Code</button>
+        <span id="otpTimerWrap"> (<span id="otpTimer" style="color:#E8197A;font-weight:700">60</span>s)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+
+<div id="dash-page" class="page">
+  <div class="sb-ov" id="sbOv" onclick="closeSB()"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sb-top"><div class="sb-brand">Ed Sheeran</div><div class="sb-sub2">Loop Tour 2026</div></div>
+    <div class="sb-it active" id="sb-tickets" onclick="showDash('tickets');closeSB()">&#127915; My Tickets</div>
+    <div class="sb-it" id="sb-deposit" onclick="openDep();closeSB()">&#128179; Deposit</div>
+    <div class="sb-it" id="sb-history" onclick="showDash('history');closeSB()">&#128203; History</div>
+    <div class="sb-it" id="sb-mg" onclick="showMG();closeSB()">&#129309; Meet &amp; Greet</div>
+    <div class="sb-it" id="sb-admin" onclick="showAdmin();closeSB()" style="display:none;">👑 Admin Panel</div>
+    <div class="sb-out"><div class="sb-it" onclick="doLogout()">&#128682; Log Out</div></div>
+  </div>
+  <div class="d-top">
+    <button class="ham" onclick="togSB()" style="gap:4px">
+      <span style="display:block;width:22px;height:2px;background:#E8197A;border-radius:2px"></span>
+      <span style="display:block;width:22px;height:2px;background:#E8197A;border-radius:2px"></span>
+      <span style="display:block;width:22px;height:2px;background:#E8197A;border-radius:2px"></span>
+    </button>
+    <div class="d-brand">Loop Tour</div>
+    <div class="d-usr"><div class="d-av" id="dAv">E</div><span class="d-uname" id="dNm">User</span></div>
+  </div>
+  <div class="d-content">
+    <div class="d-hello"><h1>Welcome, <span id="dGr">there</span> &#128075;</h1><p>Manage your Loop Tour tickets and bookings.</p></div>
+    <div class="bal-card">
+      <div class="bal-lbl">Account Balance</div>
+      <div class="bal-amt" id="balAmt">$0.00</div>
+      <div class="bal-btns">
+        <button class="bal-btn" onclick="openDep()">+ Deposit</button>
+        <button class="bal-btn" onclick="showDash('history')">History</button>
+      </div>
+    </div>
+    <div id="tikView"><div class="sec-hd">&#127915; Tour Dates</div><div class="dt-grid" id="dashTix"></div></div>
+    <div id="histView" style="display:none"><div class="sec-hd">&#128203; Transaction History</div><div id="histList"></div></div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+
+<div id="admin-page" class="page">
+  <div class="admin-container">
+    <div class="admin-header">
+      <button class="admin-back" onclick="goDash()">← Back to Dashboard</button>
+      <h1>🎫 Admin Panel</h1>
+      <div class="admin-user">👑 Admin</div>
+    </div>
+
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon">👥</div>
+        <div class="admin-stat-number" id="adminTotalUsers">0</div>
+        <div class="admin-stat-label">Total Users</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon">💰</div>
+        <div class="admin-stat-number" id="adminTotalRevenue">$0</div>
+        <div class="admin-stat-label">Total Revenue</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon">🎫</div>
+        <div class="admin-stat-number" id="adminTotalTickets">0</div>
+        <div class="admin-stat-label">Tickets Sold</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon">📅</div>
+        <div class="admin-stat-number" id="adminTotalEvents">0</div>
+        <div class="admin-stat-label">Total Events</div>
+      </div>
+    </div>
+
+    <div class="admin-nav">
+      <button class="admin-nav-btn active" onclick="showAdminTab('users')">👥 Users</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('tickets')">🎫 Tickets</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('events')">📅 Events</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('deposits')">💰 Deposits</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('mg')">🤝 Meet & Greet</button>
+    </div>
+
+    <div class="admin-content">
+      <div id="adminUsersTab" class="admin-tab active">
+        <div class="admin-tab-header">
+          <h2>👥 User Management</h2>
+          <button class="admin-btn admin-btn-primary" onclick="refreshUsers()">🔄 Refresh</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminUsersTable">
+            <thead><tr><th>User</th><th>Email</th><th>Balance</th><th>Tickets</th><th>Actions</th></tr></thead>
+            <tbody id="adminUsersBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading users...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="adminTicketsTab" class="admin-tab">
+        <div class="admin-tab-header">
+          <h2>🎫 Ticket Sales</h2>
+          <button class="admin-btn admin-btn-primary" onclick="refreshTickets()">🔄 Refresh</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminTicketsTable">
+            <thead><tr><th>User</th><th>Event</th><th>Quantity</th><th>Amount</th><th>Date</th></tr></thead>
+            <tbody id="adminTicketsBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading tickets...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="adminEventsTab" class="admin-tab">
+        <div class="admin-tab-header">
+          <h2>📅 Manage Events</h2>
+          <button class="admin-btn admin-btn-success" onclick="showAddEvent()">➕ Add Event</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminEventsTable">
+            <thead><tr><th>Date</th><th>Venue</th><th>City</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="adminEventsBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading events...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="adminDepositsTab" class="admin-tab">
+        <div class="admin-tab-header">
+          <h2>💰 Deposit History</h2>
+          <button class="admin-btn admin-btn-primary" onclick="refreshDeposits()">🔄 Refresh</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminDepositsTable">
+            <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="adminDepositsBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading deposits...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="adminMgTab" class="admin-tab">
+        <div class="admin-tab-header">
+          <h2>🤝 Meet & Greet Requests</h2>
+          <button class="admin-btn admin-btn-primary" onclick="refreshMG()">🔄 Refresh</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminMgTable">
+            <thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="adminMgBody"><tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">Loading requests...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Event Modal -->
+<div class="ov" id="addEventOv">
+  <div class="modal" style="max-width:500px;">
+    <button class="mx" onclick="closeOv('addEventOv')">✕</button>
+    <div class="sm-ttl" style="font-size:1.3rem;">➕ Add New Event</div>
+    <div class="fg"><label class="fl">Date</label><input type="date" id="adminEventDate" class="fi"></div>
+    <div class="fg"><label class="fl">Venue</label><input type="text" id="adminEventVenue" class="fi" placeholder="Venue name"></div>
+    <div class="fg"><label class="fl">City</label><input type="text" id="adminEventCity" class="fi" placeholder="City, Country"></div>
+    <div class="fg"><label class="fl">Support Acts</label><input type="text" id="adminEventSupport" class="fi" placeholder="Support acts (comma separated)"></div>
+    <div class="fg"><label class="fl">Status</label>
+      <select id="adminEventStatus" class="fi">
+        <option value="false">Available</option>
+        <option value="true">Sold Out</option>
+      </select>
+    </div>
+    <button class="btn-sub" onclick="addEvent()">Add Event</button>
+  </div>
+</div>
+
+<!-- DEPOSIT STEP 1 -->
+
+<div id="dep1-page" class="page">
+  <div class="dep-pg">
+    <div class="dep-top">
+      <button class="dep-bk" onclick="goDash()">&#8592;</button>
+      <div class="dep-t">Deposit Funds</div>
+    </div>
+    <div class="dep-body"><div class="dep-card">
+      <div class="dep-ttl">Add Funds</div>
+      <div class="dep-sb">Add funds to your account using cryptocurrency.</div>
+      <div class="step-lbl">1. Choose Payment Method</div>
+      <div class="meth-grid">
+        <div class="meth sel" id="m-btc" onclick="selM('btc')">
+          <div class="meth-ico">&#8383;</div>
+          <div class="meth-nm">Bitcoin</div>
+          <div class="meth-cd">BTC</div>
+        </div>
+        <div class="meth" id="m-eth" onclick="selM('eth')">
+          <div class="meth-ico">&#9674;</div>
+          <div class="meth-nm">Ethereum</div>
+          <div class="meth-cd">ETH</div>
+        </div>
+      </div>
+      <div class="step-lbl">2. Enter Amount (USD)</div>
+      <div class="fg">
+        <input type="number" id="depAmt" class="fi" placeholder="e.g. 500" min="10" onkeydown="if(event.key==='Enter')procDep()">
+      </div>
+      <button class="btn-sub" onclick="procDep()">Proceed &#8594;</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- DEPOSIT STEP 2 -->
+
+<div id="dep2-page" class="page">
+  <div class="dep-pg">
+    <div class="dep-top">
+      <button class="dep-bk" onclick="showPg('dep1-page')">&#8592;</button>
+      <div class="dep-t">Send Payment</div>
+    </div>
+    <div class="dep-body"><div class="dep-card">
+      <div class="dep-ttl">Send Bitcoin</div>
+      <div class="dep-sb">Send the exact amount to the address below.</div>
+      <div class="amt-hl">
+        <div class="amt-lb">Amount to Send</div>
+        <div class="amt-vl" id="d2usd">$0.00</div>
+        <div class="amt-bt" id="d2btc">~ 0.00000000 BTC</div>
+      </div>
+      <div class="qr-ctr">
+        <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="border-radius:14px;border:3px solid #FFE0F0;display:block;margin:0 auto">
+          <rect width="200" height="200" fill="#ffffff"/>
+          <rect x="10" y="10" width="70" height="70" rx="6" fill="#E8197A"/>
+          <rect x="18" y="18" width="54" height="54" rx="3" fill="#ffffff"/>
+          <rect x="26" y="26" width="38" height="38" rx="2" fill="#E8197A"/>
+          <rect x="120" y="10" width="70" height="70" rx="6" fill="#E8197A"/>
+          <rect x="128" y="18" width="54" height="54" rx="3" fill="#ffffff"/>
+          <rect x="136" y="26" width="38" height="38" rx="2" fill="#E8197A"/>
+          <rect x="10" y="120" width="70" height="70" rx="6" fill="#E8197A"/>
+          <rect x="18" y="128" width="54" height="54" rx="3" fill="#ffffff"/>
+          <rect x="26" y="136" width="38" height="38" rx="2" fill="#E8197A"/>
+          <rect x="90" y="10" width="10" height="10" fill="#E8197A"/>
+          <rect x="104" y="10" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="24" width="10" height="10" fill="#E8197A"/>
+          <rect x="104" y="38" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="52" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="104" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="120" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="134" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="148" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="162" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="176" y="90" width="10" height="10" fill="#E8197A"/>
+          <rect x="120" y="104" width="10" height="10" fill="#E8197A"/>
+          <rect x="148" y="104" width="10" height="10" fill="#E8197A"/>
+          <rect x="176" y="104" width="10" height="10" fill="#E8197A"/>
+          <rect x="120" y="118" width="10" height="10" fill="#E8197A"/>
+          <rect x="134" y="118" width="10" height="10" fill="#E8197A"/>
+          <rect x="162" y="118" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="104" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="118" width="10" height="10" fill="#E8197A"/>
+          <rect x="104" y="118" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="132" width="10" height="10" fill="#E8197A"/>
+          <rect x="104" y="146" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="160" width="10" height="10" fill="#E8197A"/>
+          <rect x="90" y="176" width="10" height="10" fill="#E8197A"/>
+          <rect x="134" y="134" width="10" height="10" fill="#E8197A"/>
+          <rect x="148" y="148" width="10" height="10" fill="#E8197A"/>
+          <rect x="162" y="134" width="10" height="10" fill="#E8197A"/>
+          <rect x="176" y="148" width="10" height="10" fill="#E8197A"/>
+          <rect x="148" y="162" width="10" height="10" fill="#E8197A"/>
+          <rect x="162" y="176" width="10" height="10" fill="#E8197A"/>
+          <rect x="176" y="162" width="10" height="10" fill="#E8197A"/>
+          <circle cx="100" cy="100" r="14" fill="#E8197A"/>
+          <text x="100" y="104" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace" font-weight="bold">BTC</text>
+        </svg>
+        <div style="font-size:0.78rem;color:#999999;margin-top:10px">Scan with your Bitcoin wallet app</div>
+      </div>
+      <div class="step-lbl">Bitcoin Address</div>
+      <div class="addr-box">
+        <span id="walletAddrDisp" style="font-size:0.73rem;word-break:break-all">bc1qm4l45yuppla9d7a7vv7dz0cxvl55sqacx5mhgj</span>
+        <button class="copy-btn" onclick="copyAddr()">Copy</button>
+      </div>
+      <div class="warn"><span>&#9888;&#65039;</span><span>Send only Bitcoin (BTC) to this address. Sending any other coin may result in permanent loss of funds.</span></div>
+      <div class="net-g">
+        <div class="net-it"><div class="net-lb">Network</div><div class="net-vl">Bitcoin</div></div>
+        <div class="net-it"><div class="net-lb">Min. Deposit</div><div class="net-vl">$10.00</div></div>
+        <div class="net-it"><div class="net-lb">Confirmations</div><div class="net-vl">1</div></div>
+      </div>
+      <button class="btn-sub" onclick="confSent()">I Have Sent the Payment &#10003;</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- MEET & GREET -->
+
+<div id="mg-page" class="page">
+  <div class="dep-pg">
+    <div class="dep-top">
+      <button class="dep-bk" onclick="goDash()">&#8592;</button>
+      <div class="dep-t">Meet &amp; Greet</div>
+    </div>
+    <div class="dep-body">
+      <div class="mg-hero">
+        <div class="mg-h-ico">&#127908;</div>
+        <div class="mg-h-ttl">Meet Ed Sheeran</div>
+        <div class="mg-h-sb">Limited spots. Book your exclusive experience.</div>
+      </div>
+      <div class="mg-card">
+        <div class="frow">
+          <div class="fg"><label class="fl">Full Name</label><input type="text" id="mg-nm" class="fi" placeholder="Your name"></div>
+          <div class="fg"><label class="fl">Email</label><input type="email" id="mg-em" class="fi" placeholder="you@example.com"></div>
+        </div>
+        <div class="fg"><label class="fl">Phone</label><input type="tel" id="mg-ph" class="fi" placeholder="+1 555 000 0000"></div>
+        <div class="fg">
+          <label class="fl">Preferred Date</label>
+          <div style="border:2px solid #e8e8e8;border-radius:12px;padding:14px">
+            <div class="cal-nav2">
+              <button class="cal-nb" onclick="calPrev()">&#8249;</button>
+              <span class="cal-ml" id="calLbl"></span>
+              <button class="cal-nb" onclick="calNext()">&#8250;</button>
+            </div>
+            <div class="cal-hd">
+              <div class="cal-hl">Su</div><div class="cal-hl">Mo</div><div class="cal-hl">Tu</div>
+              <div class="cal-hl">We</div><div class="cal-hl">Th</div><div class="cal-hl">Fr</div><div class="cal-hl">Sa</div>
+            </div>
+            <div class="cal-g" id="calGrid"></div>
+            <div class="cal-leg">
+              <span><div class="leg-dot" style="background:#fee2e2"></div>Show day (unavailable)</span>
+              <span><div class="leg-dot" style="background:#E8197A"></div>Selected</span>
+            </div>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Preferred Time (8:00 AM &ndash; 11:00 AM)</label>
+          <div class="time-g">
+            <div class="ts" onclick="selTs(this)">8:00 AM</div>
+            <div class="ts" onclick="selTs(this)">8:30 AM</div>
+            <div class="ts" onclick="selTs(this)">9:00 AM</div>
+            <div class="ts" onclick="selTs(this)">9:30 AM</div>
+            <div class="ts" onclick="selTs(this)">10:00 AM</div>
+            <div class="ts" onclick="selTs(this)">10:30 AM</div>
+            <div class="ts" onclick="selTs(this)">11:00 AM</div>
+          </div>
+        </div>
+        <button class="btn-sub" onclick="mgProc()">Proceed &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEET & GREET FEE -->
+
+<div id="mgfee-page" class="page">
+  <div class="dep-pg">
+    <div class="dep-top">
+      <button class="dep-bk" onclick="showPg('mg-page')">&#8592;</button>
+      <div class="dep-t">Confirm Booking</div>
+    </div>
+    <div class="fee-body">
+      <div class="fee-ico">&#128274;</div>
+      <h2 class="fee-ttl">Security &amp; Preparation Fee</h2>
+      <p class="fee-txt">For security reasons and preparation purposes, a fee is required to finalise your meet &amp; greet booking. This confirms your spot and helps our team prepare your exclusive experience.</p>
+      <div class="fee-box">
+        <div class="fee-lbl">Booking Fee</div>
+        <div class="fee-amt">$1,000</div>
+        <div class="fee-nt">One-time security &amp; preparation fee</div>
+      </div>
+      <button class="btn-sub" id="mgPayBtn" onclick="mgPay()">Pay $1,000 &amp; Confirm &#8594;</button>
+      <p class="fee-bal">Your balance: <strong id="mgBal">$0.00</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- TICKET MODAL -->
+
+<div class="ov" id="tixOv">
+  <div class="modal">
+    <button class="mx" onclick="closeOv('tixOv')">&#10005;</button>
+    <div class="m-tag" id="mDate"></div>
+    <div class="m-ttl" id="mVen"></div>
+    <div class="m-sb" id="mCit"></div>
+    <div class="m-typ"><strong>Standard Admission</strong> &middot; General Floor Access</div>
+    <div class="m-prc">$100 <span style="font-size:0.9rem;color:#999999;font-family:'Inter',sans-serif">per ticket</span></div>
+    <div class="qty-row">
+      <span class="qty-lbl">Quantity</span>
+      <div class="qty-ctrl">
+        <button class="qty-b" onclick="chgQ(-1)">&#8722;</button>
+        <span class="qty-n" id="mQ">1</span>
+        <button class="qty-b" onclick="chgQ(1)">&#43;</button>
+      </div>
+    </div>
+    <div class="tot-row"><span>Total</span><span class="tot-v" id="mTot">$100.00</span></div>
+    <button class="btn-mg" onclick="buyTix()">Purchase Tickets</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+
+<div class="ov" id="sucOv">
+  <div class="modal" style="text-align:center;padding:40px 32px">
+    <button class="mx" onclick="closeOv('sucOv')">&#10005;</button>
+    <div class="sm-ico">&#127881;</div>
+    <div class="sm-ttl">Purchase Successful!</div>
+    <div class="sm-sb">Details of your ticket purchase will be sent to your email shortly. Enjoy the show!</div>
+    <button class="btn-mg" onclick="closeOv('sucOv')">Done</button>
+  </div>
+</div>
+
+<!-- MG SUCCESS MODAL -->
+
+<div class="ov" id="mgSucOv">
+  <div class="modal" style="text-align:center;padding:40px 32px">
+    <button class="mx" onclick="closeOv('mgSucOv');goDash()">&#10005;</button>
+    <div class="sm-ico">&#129309;</div>
+    <div class="sm-ttl">Request Received!</div>
+    <div class="sm-sb">Thanks! We have received your meet &amp; greet request. An official team member will contact you shortly to finalise your booking.</div>
+    <button class="btn-mg" onclick="closeOv('mgSucOv');goDash()">Back to Dashboard</button>
+  </div>
+</div>
+
+<script>
+// ─── FIREBASE CONFIG ──────────────────────────────────────────────────────────
+var fbConfig = {
+  apiKey: "AIzaSyCvQutyyj9IEgZPN9L0OF9VJ6XeC7POpco",
+  authDomain: "ed-sheeran-loop-tour.firebaseapp.com",
+  projectId: "ed-sheeran-loop-tour",
+  storageBucket: "ed-sheeran-loop-tour.firebasestorage.app",
+  messagingSenderId: "279691528850",
+  appId: "1:279691528850:web:bdd8b584a8d35d482fb44b"
+};
+firebase.initializeApp(fbConfig);
+var auth = firebase.auth();
+var db = firebase.firestore();
+
+// ─── EMAILJS INIT ─────────────────────────────────────────────────────────────
+emailjs.init({
+  publicKey: 'KNFIOQmX4KE0zkQWi',
+  blockHeadless: false,
+});
+
+var WALLET = 'bc1qm4l45yuppla9d7a7vv7dz0cxvl55sqacx5mhgj';
+
+var TOURS = [
+  {d:'25',m:'JUN',y:'2026',v:'American Family Insurance Amphitheater',c:'Milwaukee, WI, USA',s:'Myles Smith, Aaron Rowe',sold:false},
+  {d:'27',m:'JUN',y:'2026',v:'Soldier Field',c:'Chicago, IL, USA',s:'Myles Smith, Ellie Banke',sold:false},
+  {d:'04',m:'JUL',y:'2026',v:'Empower Field at Mile High',c:'Denver, CO, USA',s:'Myles Smith, Aaron Rowe',sold:false},
+  {d:'18',m:'JUL',y:'2026',v:'Allegiant Stadium',c:'Las Vegas, NV, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
+  {d:'21',m:'JUL',y:'2026',v:'Petco Park',c:'San Diego, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
+  {d:'25',m:'JUL',y:'2026',v:"Levi's Stadium",c:'Santa Clara, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
+  {d:'01',m:'AUG',y:'2026',v:'Lumen Field',c:'Seattle, WA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
+  {d:'08',m:'AUG',y:'2026',v:'SoFi Stadium',c:'Los Angeles, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
+  {d:'15',m:'AUG',y:'2026',v:'U.S. Bank Stadium',c:'Minneapolis, MN, USA',s:'Myles Smith, Lukas Graham, Ellie Banke',sold:false},
+  {d:'20',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
+  {d:'21',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
+  {d:'22',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
+  {d:'29',m:'AUG',y:'2026',v:'Ford Field',c:'Detroit, MI, USA',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
+  {d:'04',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false},
+  {d:'05',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false},
+  {d:'19',m:'SEP',y:'2026',v:'Lincoln Financial Field',c:'Philadelphia, PA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'25',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'26',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'03',m:'OCT',y:'2026',v:'Mercedes-Benz Stadium',c:'Atlanta, GA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'10',m:'OCT',y:'2026',v:'Lucas Oil Stadium',c:'Indianapolis, IN, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'17',m:'OCT',y:'2026',v:'Bank of America Stadium',c:'Charlotte, NC, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'24',m:'OCT',y:'2026',v:'AT&T Stadium',c:'Arlington, TX, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'29',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false},
+  {d:'30',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false},
+  {d:'07',m:'NOV',y:'2026',v:'Raymond James Stadium',c:'Tampa, FL, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
+  {d:'21',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'',sold:true},
+  {d:'22',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'Finneas',sold:false},
+  {d:'26',m:'NOV',y:'2026',v:'Nueva Olla Stadium',c:'Asuncion, Paraguay',s:'Finneas',sold:false},
+  {d:'29',m:'NOV',y:'2026',v:'Tomas Duco Stadium',c:'Buenos Aires, Argentina',s:'Finneas',sold:false},
+  {d:'05',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'',sold:true},
+  {d:'06',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'Finneas',sold:false},
+  {d:'11',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false},
+  {d:'12',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false}
+];
+
+var BLOCKED = ['2026-6-25','2026-6-27','2026-7-4','2026-7-18','2026-7-21','2026-7-25',
+  '2026-8-1','2026-8-8','2026-8-15','2026-8-20','2026-8-21','2026-8-22','2026-8-29',
+  '2026-9-4','2026-9-5','2026-9-19','2026-9-25','2026-9-26','2026-10-3','2026-10-10',
+  '2026-10-17','2026-10-24','2026-10-29','2026-10-30','2026-11-7','2026-11-21',
+  '2026-11-22','2026-11-26','2026-11-29','2026-12-5','2026-12-6','2026-12-11','2026-12-12'];
+
+var COUNTRIES = {
+  'United States':['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'],
+  'Canada':['Alberta','British Columbia','Manitoba','New Brunswick','Newfoundland','Northwest Territories','Nova Scotia','Nunavut','Ontario','Prince Edward Island','Quebec','Saskatchewan','Yukon'],
+  'United Kingdom':['England','Scotland','Wales','Northern Ireland'],
+  'Australia':['New South Wales','Victoria','Queensland','South Australia','Western Australia','Tasmania','ACT','Northern Territory'],
+  'Germany':['Bavaria','Berlin','Hamburg','Hesse','North Rhine-Westphalia','Baden-Wurttemberg','Saxony','Lower Saxony','Brandenburg','Bremen','Rhineland-Palatinate','Saarland','Saxony-Anhalt','Schleswig-Holstein','Thuringia','Mecklenburg-Vorpommern'],
+  'France':['Ile-de-France','Auvergne-Rhone-Alpes','Occitanie','Nouvelle-Aquitaine','Hauts-de-France','PACA','Grand Est','Pays de la Loire','Normandy','Brittany','Bourgogne-Franche-Comte','Centre-Val de Loire','Corsica'],
+  'Brazil':['Sao Paulo','Rio de Janeiro','Minas Gerais','Bahia','Parana','Rio Grande do Sul','Pernambuco','Ceara','Para','Santa Catarina','Goias','Maranhao','Mato Grosso','Amazonas','Espirito Santo','Distrito Federal'],
+  'Mexico':['Mexico City','Jalisco','Nuevo Leon','Estado de Mexico','Guanajuato','Puebla','Veracruz','Chihuahua','Michoacan','Oaxaca','Guerrero','Tamaulipas','Baja California','Sinaloa','Coahuila','Sonora','Queretaro','San Luis Potosi','Yucatan','Tabasco','Chiapas','Hidalgo','Morelos','Durango','Zacatecas','Quintana Roo','Colima','Campeche','Nayarit','Tlaxcala','Aguascalientes','Baja California Sur'],
+  'Argentina':['Buenos Aires','Cordoba','Santa Fe','Mendoza','Tucuman','Salta','Entre Rios','Misiones','Chaco','Corrientes','Santiago del Estero','San Juan','Jujuy','Rio Negro','Neuquen','Formosa','La Pampa','Chubut','San Luis','Catamarca','La Rioja','Santa Cruz','Tierra del Fuego'],
+  'Chile':['Metropolitan Region','Valparaiso','Biobio','La Araucania','Los Lagos','Coquimbo','Maule','O\'Higgins','Antofagasta','Tarapaca','Los Rios','Atacama','Nuble','Magallanes'],
+  'Colombia':['Bogota','Antioquia','Valle del Cauca','Cundinamarca','Atlantico','Santander','Bolivar'],
+  'Nigeria':['Lagos','Kano','Oyo','Rivers','Abuja','Delta','Kaduna','Enugu','Imo','Ogun','Anambra','Kwara','Edo','Borno','Niger','Plateau','Bauchi','Ondo'],
+  'Ghana':['Greater Accra','Ashanti','Western','Central','Eastern','Volta','Northern','Upper East','Upper West','Brong-Ahafo'],
+  'South Africa':['Gauteng','Western Cape','KwaZulu-Natal','Eastern Cape','Limpopo','Mpumalanga','North West','Free State','Northern Cape'],
+  'Kenya':['Nairobi','Mombasa','Kisumu','Nakuru','Kiambu','Machakos','Meru','Kilifi','Kajiado'],
+  'India':['Maharashtra','Delhi','Karnataka','Tamil Nadu','Uttar Pradesh','Gujarat','West Bengal','Rajasthan','Telangana','Kerala','Andhra Pradesh','Punjab','Bihar','Madhya Pradesh','Haryana'],
+  'Japan':['Tokyo','Osaka','Kanagawa','Aichi','Saitama','Chiba','Hyogo','Hokkaido','Fukuoka','Shizuoka'],
+  'Philippines':['Metro Manila','Cebu','Davao','Laguna','Rizal','Cavite','Bulacan','Pampanga','Batangas'],
+  'Malaysia':['Kuala Lumpur','Selangor','Johor','Penang','Sabah','Sarawak','Perak','Kedah','Negeri Sembilan'],
+  'Singapore':['Central Region','East Region','North Region','West Region'],
+  'UAE':['Abu Dhabi','Dubai','Sharjah','Ajman','Ras Al Khaimah'],
+  'Saudi Arabia':['Riyadh','Mecca','Medina','Eastern Province'],
+  'Ireland':['Dublin','Cork','Limerick','Galway','Waterford'],
+  'New Zealand':['Auckland','Wellington','Canterbury','Waikato','Bay of Plenty'],
+  'Netherlands':['North Holland','South Holland','Utrecht','North Brabant','Gelderland'],
+  'Spain':['Madrid','Catalonia','Andalusia','Valencia','Galicia','Basque Country'],
+  'Italy':['Lombardy','Lazio','Campania','Veneto','Sicily'],
+  'South Korea':['Seoul','Busan','Incheon','Daegu','Daejeon','Gwangju','Ulsan','Jeju','Gyeonggi','Gangwon'],
+  'Pakistan':['Punjab','Sindh','Khyber Pakhtunkhwa','Balochistan','Islamabad'],
+  'Jamaica':['Kingston','Saint Andrew','Saint Thomas','Portland','Saint Mary','Saint Ann','Trelawny','Saint James','Hanover','Westmoreland','Saint Elizabeth','Manchester','Clarendon','Saint Catherine'],
+  'Trinidad and Tobago':['Port of Spain','San Fernando','Arima','Chaguanas','Tobago'],
+  'Other':['N/A']
+};
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+var usr = null, bal = 0, txs = [], qty = 1, curT = null, depAmtVal = 0;
+var calY = 2026, calMo = 5, selDt = null, selTm = null, mgD = {};
+var pendingEmail = '', pendingFirst = '', otpCode = '', otpInterval = null;
+var DASH_PGS = ['dash-page','dep1-page','dep2-page','mg-page','mgfee-page','admin-page'];
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var isAdmin = false;
+
+// ─── FIREBASE AUTH ────────────────────────────────────────────────────────────
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
+  auth.onAuthStateChanged(function(firebaseUser) {
+    if (firebaseUser) {
+      db.collection('users').doc(firebaseUser.uid).get().then(function(doc) {
+        if (doc.exists) {
+          var data = doc.data();
+          usr = {
+            name: (data.firstName || '') + ' ' + (data.lastName || ''),
+            first: data.firstName || firebaseUser.email.split('@')[0],
+            email: firebaseUser.email,
+            uid: firebaseUser.uid
+          };
+          bal = data.balance || 0;
+          txs = data.transactions || [];
+          isAdmin = data.isAdmin || false;
+        } else {
+          var n = firebaseUser.displayName || firebaseUser.email.split('@')[0];
+          usr = { name: n, first: n.split(' ')[0], email: firebaseUser.email, uid: firebaseUser.uid };
+          bal = 0; txs = [];
+          isAdmin = false;
+        }
+        setupDash();
+        if (isAdmin) {
+          showPg('admin-page');
+          loadAdminData();
+        } else {
+          showPg('dash-page');
+        }
+      }).catch(function(e) {
+        console.error(e);
+      });
+    }
+  });
+});
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+function doLogin() {
+  var email = document.getElementById('li-em').value.trim();
+  var pw = document.getElementById('li-pw').value;
+  if (!email || !pw) { toast('Please enter email and password.', 'err'); return; }
+  
+  // Check for admin credentials (hardcoded check)
+  if (email === 'admin@gmail.com' && pw === 'admin@123') {
+    setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Signing In...', true);
+    
+    // Try to sign in first
+    auth.signInWithEmailAndPassword(email, pw).then(function(cred) {
+      var uid = cred.user.uid;
+      // Ensure admin document exists
+      return db.collection('users').doc(uid).set({
+        firstName: 'Admin',
+        lastName: 'User',
+        email: 'admin@gmail.com',
+        phone: '',
+        country: '',
+        balance: 0,
+        transactions: [],
+        isAdmin: true,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    }).then(function() {
+      var user = auth.currentUser;
+      usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
+      bal = 0; txs = [];
+      isAdmin = true;
+      setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+      setupDash();
+      showPg('admin-page');
+      loadAdminData();
+      toast('Welcome Admin! 👑', 'ok');
+    }).catch(function(err) {
+      // If admin doesn't exist, create the account
+      if (err.code === 'auth/user-not-found') {
+        auth.createUserWithEmailAndPassword(email, pw).then(function(cred) {
+          var uid = cred.user.uid;
+          return db.collection('users').doc(uid).set({
+            firstName: 'Admin',
+            lastName: 'User',
+            email: 'admin@gmail.com',
+            phone: '',
+            country: '',
+            balance: 0,
+            transactions: [],
+            isAdmin: true,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }).then(function() {
+          var user = auth.currentUser;
+          usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
+          bal = 0; txs = [];
+          isAdmin = true;
+          setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+          setupDash();
+          showPg('admin-page');
+          loadAdminData();
+          toast('Welcome Admin! 👑', 'ok');
+        }).catch(function(err) {
+          setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+          toast('Error creating admin: ' + err.message, 'err');
+        });
+      } else {
+        setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+        toast('Admin login error: ' + err.message, 'err');
+      }
+    });
+    return;
+  }
+  
+  // Regular user login
+  setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Signing In...', true);
+  auth.signInWithEmailAndPassword(email, pw).then(function(cred) {
+    return db.collection('users').doc(cred.user.uid).get().then(function(doc) {
+      if (doc.exists) {
+        var data = doc.data();
+        usr = {
+          name: (data.firstName || '') + ' ' + (data.lastName || ''),
+          first: data.firstName || email.split('@')[0],
+          email: email, uid: cred.user.uid
+        };
+        bal = data.balance || 0;
+        txs = data.transactions || [];
+        isAdmin = data.isAdmin || false;
+      } else {
+        usr = { name: email.split('@')[0], first: email.split('@')[0], email: email, uid: cred.user.uid };
+        bal = 0; txs = [];
+        isAdmin = false;
+      }
+      setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+      setupDash();
+      if (isAdmin) {
+        showPg('admin-page');
+        loadAdminData();
+      } else {
+        showPg('dash-page');
+      }
+      toast('Welcome back, ' + usr.first + '!', 'ok');
+    });
+  }).catch(function(err) {
+    setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
+    if (err.code === 'auth/user-not-found') {
+      toast('Account not found. Please sign up first.', 'err');
+    } else {
+      toast('Incorrect email or password.', 'err');
+    }
+  });
+}
+
+// ─── ADMIN FUNCTIONS ──────────────────────────────────────────────────────────
+
+function showAdmin() {
+  if (!isAdmin) {
+    toast('Admin access required.', 'err');
+    return;
+  }
+  showPg('admin-page');
+  loadAdminData();
+}
+
+function loadAdminData() {
+  loadUsers();
+  loadTickets();
+  loadEvents();
+  loadDeposits();
+  loadMG();
+  updateAdminStats();
+}
+
+function showAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.admin-nav-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  
+  var tabId = 'admin' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab';
+  var el = document.getElementById(tabId);
+  if (el) el.classList.add('active');
+  
+  document.querySelectorAll('.admin-nav-btn').forEach(function(btn) {
+    if (btn.textContent.toLowerCase().includes(tab)) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function loadUsers() {
+  var tbody = document.getElementById('adminUsersBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
+  
+  db.collection('users').get().then(function(snapshot) {
+    if (snapshot.empty) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">No users found</td></tr>';
+      return;
+    }
+    
+    var html = '';
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      var tickets = data.transactions ? data.transactions.filter(function(t) { return t.type === 'Ticket Purchase'; }).length : 0;
+      var isAdminUser = data.isAdmin || false;
+      html += '<tr>' +
+        '<td><strong>' + (data.firstName || '') + ' ' + (data.lastName || '') + (isAdminUser ? ' 👑' : '') + '</strong></td>' +
+        '<td>' + data.email + '</td>' +
+        '<td>$' + (data.balance || 0).toFixed(2) + '</td>' +
+        '<td>' + tickets + '</td>' +
+        '<td>' +
+        (isAdminUser ? '<span style="color:#999;font-size:0.75rem;">Admin</span>' :
+        '<button class="admin-btn admin-btn-danger" onclick="deleteUser(\'' + doc.id + '\')" style="margin-right:5px;">Delete</button>') +
+        '<button class="admin-btn admin-btn-primary" onclick="viewUser(\'' + doc.id + '\')">View</button>' +
+        '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  }).catch(function(err) {
+    console.error('Error loading users:', err);
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#dc2626;padding:40px;">Error loading users: ' + err.message + '</td></tr>';
+  });
+}
+
+function refreshUsers() { loadUsers(); }
+
+function loadTickets() {
+  var tbody = document.getElementById('adminTicketsBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
+  
+  var allTickets = [];
+  db.collection('users').get().then(function(snapshot) {
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      if (data.transactions) {
+        data.transactions.forEach(function(t) {
+          if (t.type === 'Ticket Purchase') {
+            allTickets.push({
+              user: (data.firstName || '') + ' ' + (data.lastName || ''),
+              email: data.email,
+              event: t.desc || 'Unknown',
+              quantity: t.desc ? parseInt(t.desc.split('x')[1]) || 1 : 1,
+              amount: Math.abs(t.amt),
+              date: t.date
+            });
+          }
+        });
+      }
+    });
+    
+    if (allTickets.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">No tickets sold</td></tr>';
+      return;
+    }
+    
+    var html = '';
+    allTickets.reverse().slice(0, 50).forEach(function(t) {
+      html += '<tr>' +
+        '<td>' + t.user + '</td>' +
+        '<td>' + t.event + '</td>' +
+        '<td>' + t.quantity + '</td>' +
+        '<td>$' + t.amount.toFixed(2) + '</td>' +
+        '<td>' + (t.date ? new Date(t.date).toLocaleDateString() : '-') + '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  });
+}
+
+function refreshTickets() { loadTickets(); }
+
+function loadEvents() {
+  var tbody = document.getElementById('adminEventsBody');
+  if (!tbody) return;
+  var html = '';
+  TOURS.forEach(function(t, i) {
+    var status = t.sold ? 'SOLD OUT' : 'Available';
+    var statusClass = t.sold ? 'admin-badge-danger' : 'admin-badge-success';
+    html += '<tr>' +
+      '<td><strong>' + t.d + ' ' + t.m + ' ' + t.y + '</strong></td>' +
+      '<td>' + t.v + '</td>' +
+      '<td>' + t.c + '</td>' +
+      '<td><span class="admin-badge ' + statusClass + '">' + status + '</span></td>' +
+      '<td>' +
+      '<button class="admin-btn admin-btn-warning" onclick="toggleEventStatus(' + i + ')" style="margin-right:5px;">Toggle</button>' +
+      '<button class="admin-btn admin-btn-danger" onclick="deleteEvent(' + i + ')">Delete</button>' +
+      '</td>' +
+      '</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function toggleEventStatus(index) {
+  TOURS[index].sold = !TOURS[index].sold;
+  loadEvents();
+  bldTour();
+  bldDashTix();
+  bldStrip();
+  toast('Event status updated!', 'ok');
+}
+
+function deleteEvent(index) {
+  if (confirm('Delete this event?')) {
+    TOURS.splice(index, 1);
+    loadEvents();
+    bldTour();
+    bldDashTix();
+    bldStrip();
+    toast('Event deleted!', 'ok');
+  }
+}
+
+function showAddEvent() {
+  document.getElementById('adminEventDate').value = '';
+  document.getElementById('adminEventVenue').value = '';
+  document.getElementById('adminEventCity').value = '';
+  document.getElementById('adminEventSupport').value = '';
+  openOv('addEventOv');
+}
+
+function addEvent() {
+  var date = document.getElementById('adminEventDate').value;
+  var venue = document.getElementById('adminEventVenue').value.trim();
+  var city = document.getElementById('adminEventCity').value.trim();
+  var support = document.getElementById('adminEventSupport').value.trim();
+  var status = document.getElementById('adminEventStatus').value === 'true';
+  
+  if (!date || !venue || !city) {
+    toast('Please fill in all required fields.', 'err');
+    return;
+  }
+  
+  var d = new Date(date);
+  var day = String(d.getDate()).padStart(2, '0');
+  var month = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];
+  var year = d.getFullYear();
+  
+  TOURS.push({
+    d: day,
+    m: month,
+    y: String(year),
+    v: venue,
+    c: city,
+    s: support || '',
+    sold: status
+  });
+  
+  closeOv('addEventOv');
+  loadEvents();
+  bldTour();
+  bldDashTix();
+  bldStrip();
+  toast('Event added successfully!', 'ok');
+}
+
+function loadDeposits() {
+  var tbody = document.getElementById('adminDepositsBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
+  
+  var allDeposits = [];
+  db.collection('users').get().then(function(snapshot) {
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      if (data.transactions) {
+        data.transactions.forEach(function(t) {
+          if (t.type === 'Deposit' && t.amt > 0) {
+            allDeposits.push({
+              user: (data.firstName || '') + ' ' + (data.lastName || ''),
+              email: data.email,
+              amount: t.amt,
+              method: t.desc || 'Cryptocurrency',
+              date: t.date
+            });
+          }
+        });
+      }
+    });
+    
+    if (allDeposits.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">No deposits found</td></tr>';
+      return;
+    }
+    
+    var html = '';
+    allDeposits.reverse().slice(0, 50).forEach(function(d) {
+      html += '<tr>' +
+        '<td>' + d.user + '</td>' +
+        '<td><strong>$' + d.amount.toFixed(2) + '</strong></td>' +
+        '<td>' + d.method + '</td>' +
+        '<td><span class="status-badge status-active">Completed</span></td>' +
+        '<td>' + (d.date ? new Date(d.date).toLocaleDateString() : '-') + '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  });
+}
+
+function refreshDeposits() { loadDeposits(); }
+
+function loadMG() {
+  var tbody = document.getElementById('adminMgBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
+  
+  var allMg = [];
+  db.collection('users').get().then(function(snapshot) {
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      if (data.transactions) {
+        data.transactions.forEach(function(t) {
+          if (t.type === 'Meet & Greet Fee') {
+            allMg.push({
+              user: (data.firstName || '') + ' ' + (data.lastName || ''),
+              email: data.email,
+              date: t.desc ? t.desc.split(' at ')[0] : '-',
+              time: t.desc ? t.desc.split(' at ')[1] : '-',
+              amount: Math.abs(t.amt),
+              transactionDate: t.date
+            });
+          }
+        });
+      }
+    });
+    
+    if (allMg.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">No Meet & Greet requests</td></tr>';
+      return;
+    }
+    
+    var html = '';
+    allMg.reverse().slice(0, 50).forEach(function(m) {
+      html += '<tr>' +
+        '<td>' + m.user + '</td>' +
+        '<td>' + m.email + '</td>' +
+        '<td>' + m.date + '</td>' +
+        '<td>' + m.time + '</td>' +
+        '<td><span class="status-badge status-pending">Pending</span></td>' +
+        '<td>' +
+        '<button class="admin-btn admin-btn-success" onclick="approveMG(\'' + m.email + '\')" style="margin-right:5px;">Approve</button>' +
+        '<button class="admin-btn admin-btn-danger" onclick="rejectMG(\'' + m.email + '\')">Reject</button>' +
+        '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  });
+}
+
+function refreshMG() { loadMG(); }
+
+function approveMG(email) {
+  toast('Meet & Greet approved for ' + email, 'ok');
+}
+
+function rejectMG(email) {
+  toast('Meet & Greet rejected for ' + email, 'err');
+}
+
+function updateAdminStats() {
+  db.collection('users').get().then(function(snapshot) {
+    var totalUsers = snapshot.size;
+    var totalRevenue = 0;
+    var totalTickets = 0;
+    
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      totalRevenue += data.balance || 0;
+      if (data.transactions) {
+        data.transactions.forEach(function(t) {
+          if (t.type === 'Ticket Purchase') {
+            totalTickets += 1;
+          }
+        });
+      }
+    });
+    
+    var usersEl = document.getElementById('adminTotalUsers');
+    var revenueEl = document.getElementById('adminTotalRevenue');
+    var ticketsEl = document.getElementById('adminTotalTickets');
+    var eventsEl = document.getElementById('adminTotalEvents');
+    
+    if (usersEl) usersEl.textContent = totalUsers;
+    if (revenueEl) revenueEl.textContent = '$' + totalRevenue.toFixed(2);
+    if (ticketsEl) ticketsEl.textContent = totalTickets;
+    if (eventsEl) eventsEl.textContent = TOURS.length;
+  });
+}
+
+function deleteUser(userId) {
+  if (confirm('Delete this user? This action cannot be undone.')) {
+    db.collection('users').doc(userId).delete().then(function() {
+      toast('User deleted!', 'ok');
+      loadUsers();
+      updateAdminStats();
+    }).catch(function(err) {
+      toast('Error deleting user: ' + err.message, 'err');
+    });
+  }
+}
+
+function viewUser(userId) {
+  db.collection('users').doc(userId).get().then(function(doc) {
+    if (doc.exists) {
+      var data = doc.data();
+      var msg = '👤 User Details:\n\n';
+      msg += 'Name: ' + (data.firstName || '') + ' ' + (data.lastName || '') + '\n';
+      msg += 'Email: ' + data.email + '\n';
+      msg += 'Phone: ' + (data.phone || 'N/A') + '\n';
+      msg += 'Country: ' + (data.country || 'N/A') + '\n';
+      msg += 'Balance: $' + (data.balance || 0).toFixed(2) + '\n';
+      msg += 'Transactions: ' + (data.transactions ? data.transactions.length : 0);
+      alert(msg);
+    }
+  });
+}
+
+// ─── REST OF FUNCTIONS ──────────────────────────────────────────────────────
+
+function showPg(id) {
+  var ps = document.querySelectorAll('.page');
+  for (var i = 0; i < ps.length; i++) ps[i].classList.remove('active');
+  var el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+  var isDash = DASH_PGS.indexOf(id) >= 0;
+  var nav = document.getElementById('mainNav');
+  if (nav) nav.style.display = isDash ? 'none' : 'flex';
+  closeMM();
+}
+
+function goSec(id) {
+  if (!document.getElementById('home-page').classList.contains('active')) {
+    showPg('home-page');
+    setTimeout(function() {
+      var e = document.getElementById(id);
+      if (e) e.scrollIntoView({ behavior: 'smooth' });
+    }, 350);
+  } else {
+    var e = document.getElementById(id);
+    if (e) e.scrollIntoView({ behavior: 'smooth' });
+  }
+  closeMM();
+}
+
+function goDash() { 
+  if (isAdmin) {
+    showPg('admin-page');
+    loadAdminData();
+  } else {
+    showPg('dash-page'); 
+    showDash('tickets');
+  }
+}
+
+function showDash(v) {
+  document.getElementById('tikView').style.display = v === 'tickets' ? 'block' : 'none';
+  document.getElementById('histView').style.display = v === 'history' ? 'block' : 'none';
+  if (v === 'history') renderHist();
+  var its = document.querySelectorAll('.sb-it');
+  for (var i = 0; i < its.length; i++) its[i].classList.remove('active');
+  if (v === 'tickets') { var el = document.getElementById('sb-tickets'); if(el) el.classList.add('active'); }
+  if (v === 'history') { var el2 = document.getElementById('sb-history'); if(el2) el2.classList.add('active'); }
+}
+
+function togMenu() {
+  var m = document.getElementById('mmenu'), h = document.getElementById('hamBtn');
+  var o = m.classList.toggle('open');
+  h.className = o ? 'ham open' : 'ham';
+}
+function closeMM() {
+  var m = document.getElementById('mmenu'), h = document.getElementById('hamBtn');
+  if (m) m.classList.remove('open');
+  if (h) h.className = 'ham';
+}
+function togSB() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbOv').classList.toggle('open');
+}
+function closeSB() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOv').classList.remove('open');
+}
+
+function bldStrip() {
+  var t = document.getElementById('stripTrack'), h = '';
+  for (var p = 0; p < 2; p++) {
+    for (var i = 0; i < 5; i++) {
+      var r = TOURS[i];
+      var b = r.sold
+        ? '<span style="background:rgba(255,255,255,0.2);color:#fff;padding:3px 10px;border-radius:50px;font-size:0.73rem">SOLD OUT</span>'
+        : '<button class="s-btn" onclick="openTix(' + i + ')">Get Tickets</button>';
+      h += '<div class="s-item"><span class="s-date">' + r.d + ' ' + r.m + '</span><span>' + r.v + '</span><span style="opacity:0.7;font-size:0.8rem">' + r.c + '</span>' + b + '</div>';
+    }
+  }
+  t.innerHTML = h;
+}
+
+function bldTour() {
+  var el = document.getElementById('tourList'), h = '';
+  for (var i = 0; i < TOURS.length; i++) {
+    var t = TOURS[i];
+    var sp = t.s ? '<div class="tc-sup">Support: ' + t.s + '</div>' : '';
+    var bg = t.sold
+      ? '<span class="badge-sold">SOLD OUT</span>'
+      : '<button class="btn-tix" onclick="openTix(' + i + ')">Tickets</button>';
+    h += '<div class="tc"><div class="tc-date">' + t.d + '<small>' + t.m + ' ' + t.y + '</small></div><div class="tc-info"><div class="tc-venue">' + t.v + '</div><div class="tc-city">' + t.c + '</div>' + sp + '</div>' + bg + '</div>';
+  }
+  el.innerHTML = h;
+}
+
+function bldDashTix() {
+  var el = document.getElementById('dashTix'), h = '';
+  for (var i = 0; i < TOURS.length; i++) {
+    var t = TOURS[i];
+    var sp = t.s ? '<div class="dt-sp">Support: ' + t.s + '</div>' : '';
+    var b = t.sold
+      ? '<button class="btn-sold">SOLD OUT</button>'
+      : '<button class="btn-buy" onclick="openTix(' + i + ')">Buy $100</button>';
+    h += '<div class="dt-c"><div class="dt-d">' + t.d + '<small>' + t.m + '</small></div><div class="dt-inf"><div class="dt-v">' + t.v + '</div><div class="dt-ci">' + t.c + '</div>' + sp + '</div>' + b + '</div>';
+  }
+  el.innerHTML = h;
+}
+
+function openTix(i) {
+  if (!usr) { showPg('su-page'); toast('Please sign in to purchase tickets.', 'info'); return; }
+  if (isAdmin) { toast('Admin cannot purchase tickets.', 'err'); return; }
+  curT = TOURS[i]; qty = 1;
+  document.getElementById('mDate').textContent = curT.d + ' ' + curT.m + ' ' + curT.y;
+  document.getElementById('mVen').textContent = curT.v;
+  document.getElementById('mCit').textContent = curT.c;
+  document.getElementById('mQ').textContent = '1';
+  document.getElementById('mTot').textContent = '$100.00';
+  openOv('tixOv');
+}
+
+function chgQ(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+  document.getElementById('mQ').textContent = qty;
+  document.getElementById('mTot').textContent = '$' + (qty * 100).toFixed(2);
+}
+
+function buyTix() {
+  var cost = qty * 100;
+  if (bal < cost) {
+    closeOv('tixOv');
+    toast('Insufficient balance. Redirecting to deposit...', 'err');
+    setTimeout(function() { openDep(); }, 1600);
+    return;
+  }
+  bal -= cost;
+  txs.unshift({ type: 'Ticket Purchase', desc: curT.v + ' x' + qty, amt: -cost, date: new Date().toISOString() });
+  saveToDB(); updBal();
+  closeOv('tixOv');
+  openOv('sucOv');
+}
+
+function popCtry() {
+  var s = document.getElementById('su-country');
+  var ks = Object.keys(COUNTRIES).sort();
+  for (var i = 0; i < ks.length; i++) {
+    var o = document.createElement('option');
+    o.value = ks[i]; o.textContent = ks[i];
+    s.appendChild(o);
+  }
+}
+
+function loadStates() {
+  var c = document.getElementById('su-country').value;
+  var w = document.getElementById('stWrap');
+  var s = document.getElementById('su-state');
+  if (c && COUNTRIES[c]) {
+    w.style.display = 'block';
+    s.innerHTML = '<option value="">Select state/province</option>';
+    var st = COUNTRIES[c];
+    for (var i = 0; i < st.length; i++) {
+      var o = document.createElement('option');
+      o.value = st[i]; o.textContent = st[i];
+      s.appendChild(o);
+    }
+  } else {
+    w.style.display = 'none';
+  }
+}
+
+function chkPw(v) {
+  var sc = 0;
+  if (v.length >= 8) sc++;
+  if (/[A-Z]/.test(v)) sc++;
+  if (/[0-9]/.test(v)) sc++;
+  if (/[^A-Za-z0-9]/.test(v)) sc++;
+  if (v.length >= 12) sc++;
+  var f = document.getElementById('strFill'), t = document.getElementById('strTxt');
+  var p = (sc / 5) * 100;
+  f.style.width = p + '%';
+  if (sc <= 1) { f.style.background = '#dc2626'; t.textContent = 'Weak'; t.style.color = '#dc2626'; }
+  else if (sc <= 3) { f.style.background = '#f59e0b'; t.textContent = 'Fair'; t.style.color = '#f59e0b'; }
+  else { f.style.background = '#16a34a'; t.textContent = 'Strong'; t.style.color = '#16a34a'; }
+}
+
+function togPw(id, btn) {
+  var i = document.getElementById(id);
+  i.type = i.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = i.type === 'text' ? '&#128584;' : '&#128065;';
+}
+
+function doSignup() {
+  console.log('🔄 Starting signup process...');
+  
+  var first = document.getElementById('su-first').value.trim();
+  var last = document.getElementById('su-last').value.trim();
+  var email = document.getElementById('su-email').value.trim();
+  var phone = document.getElementById('su-phone').value.trim();
+  var country = document.getElementById('su-country').value;
+  var pw = document.getElementById('su-pw').value;
+  
+  if (!first || !last || !email || !phone || !country || !pw) { 
+    toast('Please fill in all fields.', 'err'); 
+    return; 
+  }
+  if (pw.length < 6) { 
+    toast('Password must be at least 6 characters.', 'err'); 
+    return; 
+  }
+
+  setBtnLoading('suBtn', 'suTxt', 'suSpn', 'Sending Code...', true);
+  otpCode = String(Math.floor(1000 + Math.random() * 9000));
+  pendingEmail = email; 
+  pendingFirst = first;
+  window._pendingUser = { first: first, last: last, email: email, phone: phone, country: country, pw: pw };
+
+  emailjs.send('service_9cfuhfo', 'template_v8m7ohr', {
+    email: email,
+    to_name: first,
+    code: otpCode,
+    subject: 'Your Loop Tour Verification Code'
+  }).then(function(response) {
+    console.log('✅ Email sent successfully:', response);
+    setBtnLoading('suBtn', 'suTxt', 'suSpn', 'Create Account', false);
+    document.getElementById('otpEmailDisp').textContent = email;
+    ['o1','o2','o3','o4'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if(el) { el.value = ''; el.classList.remove('filled'); }
+    });
+    showPg('otp-page');
+    setTimeout(function() { 
+      var o1 = document.getElementById('o1'); 
+      if(o1) o1.focus(); 
+    }, 300);
+    startOtpTimer();
+    toast('Verification code sent to your email!', 'ok');
+  }).catch(function(err) {
+    setBtnLoading('suBtn', 'suTxt', 'suSpn', 'Create Account', false);
+    console.error('❌ EmailJS Error:', err);
+    var errMsg = err.text || err.message || 'Unknown error';
+    toast('Failed to send email: ' + errMsg, 'err');
+  });
+}
+
+function otpMove(el, nextId) {
+  el.value = el.value.replace(/[^0-9]/g, '');
+  if (el.value.length === 1) {
+    el.classList.add('filled');
+    if (nextId) { var n = document.getElementById(nextId); if (n) n.focus(); }
+  } else {
+    el.classList.remove('filled');
+  }
+}
+function otpLast(el) {
+  el.value = el.value.replace(/[^0-9]/g, '');
+  if (el.value.length === 1) el.classList.add('filled');
+  else el.classList.remove('filled');
+}
+function otpBack(e, el, prevId) {
+  if (e.key === 'Backspace' && el.value === '' && prevId) {
+    var p = document.getElementById(prevId);
+    if (p) { p.value = ''; p.classList.remove('filled'); p.focus(); }
+  }
+}
+
+function startOtpTimer() {
+  var sec = 60;
+  var timerEl = document.getElementById('otpTimer');
+  var resendBtn = document.getElementById('resendBtn');
+  var timerWrap = document.getElementById('otpTimerWrap');
+  if (timerEl) timerEl.textContent = sec;
+  if (resendBtn) { resendBtn.disabled = true; resendBtn.textContent = 'Resend Code'; }
+  if (timerWrap) timerWrap.style.display = 'inline';
+  if (otpInterval) clearInterval(otpInterval);
+  otpInterval = setInterval(function() {
+    sec--;
+    if (timerEl) timerEl.textContent = sec;
+    if (sec <= 0) {
+      clearInterval(otpInterval);
+      if (resendBtn) resendBtn.disabled = false;
+      if (timerWrap) timerWrap.style.display = 'none';
+    }
+  }, 1000);
+}
+
+function resendCode() {
+  otpCode = String(Math.floor(1000 + Math.random() * 9000));
+  emailjs.send('service_9cfuhfo', 'template_v8m7ohr', {
+    email: pendingEmail,
+    to_name: pendingFirst,
+    code: otpCode,
+    subject: 'Your Loop Tour Verification Code'
+  }).then(function() {
+    toast('New code sent!', 'ok'); 
+    startOtpTimer();
+  }).catch(function(err) {
+    console.error('Resend error:', err);
+    toast('Failed to resend. Try again.', 'err');
+  });
+}
+
+function verifyOTP() {
+  var entered = document.getElementById('o1').value + document.getElementById('o2').value +
+    document.getElementById('o3').value + document.getElementById('o4').value;
+  if (entered.length < 4) { toast('Please enter the 4-digit code.', 'err'); return; }
+  if (entered !== otpCode) {
+    toast('Incorrect code. Please try again.', 'err');
+    ['o1','o2','o3','o4'].forEach(function(id){ var el=document.getElementById(id); if(el) { el.value=''; el.classList.remove('filled'); } });
+    var o1 = document.getElementById('o1');
+    if(o1) o1.focus();
+    return;
+  }
+  setBtnLoading('otpBtn', 'otpTxt', 'otpSpn', 'Creating Account...', true);
+  var p = window._pendingUser;
+  auth.createUserWithEmailAndPassword(p.email, p.pw).then(function(cred) {
+    var uid = cred.user.uid;
+    return cred.user.updateProfile({ displayName: p.first + ' ' + p.last }).then(function() {
+      return db.collection('users').doc(uid).set({
+        firstName: p.first, lastName: p.last, email: p.email,
+        phone: p.phone, country: p.country,
+        balance: 0, transactions: [],
+        isAdmin: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }).then(function() {
+      usr = { name: p.first + ' ' + p.last, first: p.first, email: p.email, uid: uid };
+      bal = 0; txs = [];
+      isAdmin = false;
+      if (otpInterval) clearInterval(otpInterval);
+      setupDash();
+      setBtnLoading('otpBtn', 'otpTxt', 'otpSpn', 'Verify Code', false);
+      showPg('dash-page');
+      toast('Welcome, ' + p.first + '! Account created.', 'ok');
+    });
+  }).catch(function(err) {
+    setBtnLoading('otpBtn', 'otpTxt', 'otpSpn', 'Verify Code', false);
+    if (err.code === 'auth/email-already-in-use') {
+      toast('Email already registered. Please log in.', 'err');
+      setTimeout(function() { showPg('li-page'); }, 2000);
+    } else {
+      toast('Error: ' + (err.message || 'Something went wrong'), 'err');
+    }
+  });
+}
+
+function setBtnLoading(btnId, txtId, spnId, lbl, on) {
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(txtId);
+  var spn = document.getElementById(spnId);
+  if (btn) btn.disabled = on;
+  if (txt) txt.textContent = lbl;
+  if (spn) spn.style.display = on ? 'block' : 'none';
+}
+
+function setupDash() {
+  var n = usr ? (usr.first || usr.name) : 'there';
+  var grEl = document.getElementById('dGr'); if (grEl) grEl.textContent = n;
+  var nmEl = document.getElementById('dNm'); if (nmEl) nmEl.textContent = n;
+  var avEl = document.getElementById('dAv'); if (avEl) avEl.textContent = n[0].toUpperCase();
+  updBal();
+  
+  var adminBtn = document.getElementById('sb-admin');
+  if (adminBtn) {
+    adminBtn.style.display = isAdmin ? 'flex' : 'none';
+  }
+}
+
+function doLogout() {
+  auth.signOut().then(function() {
+    usr = null; bal = 0; txs = []; isAdmin = false;
+    showPg('home-page');
+    toast('Logged out successfully.', 'info');
+  });
+}
+
+function updBal() {
+  var e = document.getElementById('balAmt'); if (e) e.textContent = '$' + bal.toFixed(2);
+  var m = document.getElementById('mgBal'); if (m) m.textContent = '$' + bal.toFixed(2);
+}
+
+function saveToDB() {
+  if (!usr || !usr.uid) return;
+  db.collection('users').doc(usr.uid).update({ balance: bal, transactions: txs }).catch(function(e) { console.error(e); });
+}
+
+function openDep() {
+  if (!usr) { showPg('su-page'); return; }
+  if (isAdmin) { toast('Admin cannot make deposits.', 'err'); return; }
+  showPg('dep1-page');
+}
+
+function selM(m) {
+  document.querySelectorAll('.meth').forEach(function(e) { e.classList.remove('sel'); });
+  var el = document.getElementById('m-' + m); if (el) el.classList.add('sel');
+}
+
+function procDep() {
+  var a = parseFloat(document.getElementById('depAmt').value);
+  if (!a || a < 10) { toast('Minimum deposit is $10.', 'err'); return; }
+  depAmtVal = a;
+  document.getElementById('d2usd').textContent = '$' + a.toFixed(2);
+  document.getElementById('d2btc').textContent = '~ ' + (a / 95000).toFixed(8) + ' BTC';
+  showPg('dep2-page');
+}
+
+function copyAddr() {
+  var addr = WALLET;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(addr).then(function() { toast('Address copied!', 'ok'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = addr; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('Address copied!', 'ok');
+  }
+}
+
+function confSent() {
+  var ld = document.getElementById('ldScr');
+  var ldT = document.getElementById('ldT');
+  var ldS = document.getElementById('ldS');
+  var ldFill = document.getElementById('ldFill');
+  ldT.textContent = 'Confirming Payment...';
+  ldS.textContent = 'Verifying your transaction on the blockchain';
+  ld.style.display = 'flex';
+  if (ldFill) ldFill.style.width = '0';
+  var pct = 0;
+  var prog = setInterval(function() {
+    pct += 100 / 15;
+    if (ldFill) ldFill.style.width = Math.min(pct, 100) + '%';
+  }, 1000);
+  setTimeout(function() {
+    clearInterval(prog);
+    ld.style.display = 'none';
+    bal += depAmtVal;
+    txs.unshift({ type: 'Deposit', desc: 'Bitcoin deposit', amt: depAmtVal, date: new Date().toISOString() });
+    saveToDB(); updBal();
+    showPg('dash-page'); showDash('tickets');
+    toast('Deposit successful! $' + depAmtVal.toFixed(2) + ' added.', 'ok');
+    depAmtVal = 0;
+    document.getElementById('depAmt').value = '';
+  }, 15000);
+}
+
+function renderHist() {
+  var el = document.getElementById('histList');
+  if (!txs.length) {
+    el.innerHTML = '<div class="h-empty"><div class="ico">&#128203;</div><p>No transactions yet.</p></div>';
+    return;
+  }
+  var h = '';
+  for (var i = 0; i < txs.length; i++) {
+    var t = txs[i];
+    var ic = t.amt > 0 ? '&#128179;' : '&#127915;';
+    var cl = t.amt > 0 ? 'tx-cr' : 'tx-db';
+    var sg = t.amt > 0 ? '+' : '';
+    var ds = t.date ? new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-';
+    h += '<div class="tx-c"><div class="tx-ico2">' + ic + '</div><div class="tx-inf"><div class="tx-tp">' + t.type + '</div><div class="tx-dt">' + t.desc + ' &middot; ' + ds + '</div></div><div class="tx-am ' + cl + '">' + sg + '$' + Math.abs(t.amt).toFixed(2) + '</div></div>';
+  }
+  el.innerHTML = h;
+}
+
+function showMG() {
+  if (!usr) { showPg('su-page'); return; }
+  if (isAdmin) { toast('Admin cannot book Meet & Greet.', 'err'); return; }
+  var m = document.getElementById('mgBal'); if (m) m.textContent = '$' + bal.toFixed(2);
+  showPg('mg-page');
+}
+
+function mgProc() {
+  var n = document.getElementById('mg-nm').value.trim();
+  var e = document.getElementById('mg-em').value.trim();
+  var p = document.getElementById('mg-ph').value.trim();
+  if (!n || !e || !p) { toast('Please fill in all fields.', 'err'); return; }
+  if (!selDt) { toast('Please select a date.', 'err'); return; }
+  if (!selTm) { toast('Please select a time slot.', 'err'); return; }
+  mgD = { n: n, e: e, p: p, d: selDt, t: selTm };
+  var m = document.getElementById('mgBal'); if (m) m.textContent = '$' + bal.toFixed(2);
+  showPg('mgfee-page');
+}
+
+function mgPay() {
+  if (bal < 1000) {
+    toast('Insufficient balance. Please deposit funds.', 'err');
+    setTimeout(function() { openDep(); }, 1600);
+    return;
+  }
+  var btn = document.getElementById('mgPayBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
+  setTimeout(function() {
+    bal -= 1000;
+    txs.unshift({ type: 'Meet & Greet Fee', desc: mgD.d + ' at ' + mgD.t, amt: -1000, date: new Date().toISOString() });
+    saveToDB(); updBal();
+    if (btn) { btn.disabled = false; btn.textContent = 'Pay $1,000 & Confirm →'; }
+    openOv('mgSucOv');
+  }, 1500);
+}
+
+function renderCal() {
+  var lb = document.getElementById('calLbl');
+  if (!lb) return;
+  lb.textContent = MONTHS[calMo] + ' ' + calY;
+  var g = document.getElementById('calGrid');
+  var f = new Date(calY, calMo, 1).getDay();
+  var dy = new Date(calY, calMo + 1, 0).getDate();
+  var td = new Date();
+  var h = '';
+  for (var i = 0; i < f; i++) h += '<div class="cd ce">&nbsp;</div>';
+  for (var d = 1; d <= dy; d++) {
+    var k = calY + '-' + (calMo + 1) + '-' + d;
+    var bl = BLOCKED.indexOf(k) >= 0;
+    var isPast = new Date(calY, calMo, d) < new Date(td.getFullYear(), td.getMonth(), td.getDate());
+    var isT = td.getDate() === d && td.getMonth() === calMo && td.getFullYear() === calY;
+    var isSel = selDt === k;
+    var cls = 'cd';
+    if (bl || isPast) cls += ' cb';
+    if (isT && !bl && !isPast) cls += ' ct';
+    if (isSel) cls += ' cs';
+    var onclick = (!bl && !isPast) ? ' onclick="pickD(\'' + k + '\')"' : '';
+    h += '<div class="' + cls + '"' + onclick + '>' + d + '</div>';
+  }
+  g.innerHTML = h;
+}
+
+function pickD(k) { selDt = k; renderCal(); }
+function calPrev() { calMo--; if (calMo < 0) { calMo = 11; calY--; } renderCal(); }
+function calNext() { calMo++; if (calMo > 11) { calMo = 0; calY++; } renderCal(); }
+function selTs(el) {
+  document.querySelectorAll('.ts').forEach(function(e) { e.classList.remove('sel'); });
+  el.classList.add('sel');
+  selTm = el.textContent;
+}
+
+function openOv(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeOv(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+
+function toast(msg, type) {
+  var icons = { ok: '✅', err: '❌', info: 'ℹ️' };
+  var b = document.getElementById('tBox');
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type === 'ok' ? 'ok' : type === 'err' ? 'err' : '');
+  t.innerHTML = '<span style="font-size:1.1rem;flex-shrink:0">' + (icons[type] || icons.info) + '</span><span>' + msg + '</span>';
+  b.appendChild(t);
+  setTimeout(function() {
+    t.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 4000);
+}
+
+window.addEventListener('load', function() {
+  bldStrip(); bldTour(); bldDashTix(); popCtry(); renderCal();
+  window.addEventListener('scroll', function() {
+    var nav = document.getElementById('mainNav');
+    if (nav) nav.className = window.scrollY > 50 ? 'scrolled' : '';
+  });
+});
+</script>
+
+</body>
+</html>
