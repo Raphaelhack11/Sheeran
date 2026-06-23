@@ -72,14 +72,18 @@ nav.scrolled{padding:10px 28px;box-shadow:0 2px 20px rgba(0,0,0,0.08)}
 .tour-sec{background:#f5f5f5;padding:90px 24px}
 .tour-wrap{max-width:860px;margin:0 auto}
 .tour-hd{text-align:center;margin-bottom:48px}
-.tc{background:#ffffff;border-radius:14px;padding:20px 24px;margin-bottom:10px;display:flex;align-items:center;gap:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
+.tc{background:#ffffff;border-radius:14px;padding:20px 24px;margin-bottom:10px;display:flex;flex-direction:column;align-items:flex-start;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
 .tc:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.1)}
+.tc-top{display:flex;align-items:center;gap:20px;width:100%;flex-wrap:wrap}
 .tc-date{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.3rem;color:#E8197A;min-width:72px;text-align:center;line-height:1;flex-shrink:0}
 .tc-date small{display:block;font-size:0.65rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .tc-info{flex:1;min-width:0}
 .tc-venue{font-weight:700;font-size:0.95rem;color:#111111}
 .tc-city{font-size:0.82rem;color:#999999;margin-top:2px}
 .tc-sup{font-size:0.78rem;color:#bbbbbb;margin-top:3px}
+.tc-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:10px;padding-top:8px;border-top:1px solid #f0f0f0}
+.tc-powered{font-size:0.65rem;color:#999999;display:flex;align-items:center;gap:6px}
+.tc-powered svg{width:14px;height:14px}
 .badge-sold{background:#fee2e2;color:#dc2626;font-size:0.7rem;font-weight:700;padding:5px 12px;border-radius:50px;white-space:nowrap;flex-shrink:0}
 .btn-tix{background:#E8197A;color:#ffffff;border:none;padding:10px 22px;border-radius:50px;font-weight:700;font-size:0.82rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
 .btn-tix:hover{background:#FF4DA6;transform:scale(1.06)}
@@ -161,14 +165,18 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .bal-btn:hover{background:rgba(255,255,255,0.35)}
 .sec-hd{font-size:1.2rem;font-weight:800;color:#111111;margin:32px 0 14px;display:flex;align-items:center;gap:8px}
 .dt-grid{display:grid;gap:10px}
-.dt-c{background:#ffffff;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
+.dt-c{background:#ffffff;border-radius:14px;padding:18px 22px;display:flex;flex-direction:column;align-items:flex-start;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all 0.2s}
 .dt-c:hover{box-shadow:0 6px 22px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.dt-top{display:flex;align-items:center;gap:18px;width:100%;flex-wrap:wrap}
 .dt-d{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.15rem;color:#E8197A;min-width:60px;text-align:center;line-height:1;flex-shrink:0}
 .dt-d small{display:block;font-size:0.62rem;color:#999999;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .dt-inf{flex:1;min-width:0}
 .dt-v{font-weight:700;font-size:0.9rem;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dt-ci{font-size:0.78rem;color:#999999;margin-top:2px}
 .dt-sp{font-size:0.75rem;color:#cccccc;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:10px;padding-top:8px;border-top:1px solid #f0f0f0}
+.dt-powered{font-size:0.65rem;color:#999999;display:flex;align-items:center;gap:6px}
+.dt-powered svg{width:14px;height:14px}
 .btn-buy{background:#E8197A;color:#ffffff;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:0.78rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
 .btn-buy:hover{background:#FF4DA6;transform:scale(1.06)}
 .btn-sold{background:#f3f4f6;color:#9ca3af;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:0.78rem;white-space:nowrap;flex-shrink:0}
@@ -288,8 +296,8 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   .frow{grid-template-columns:1fr}
   .auth-card,.otp-card{padding:28px 20px}
   .dep-card,.mg-card{padding:24px 18px}
-  .tc{flex-wrap:wrap}
-  .dt-c{flex-wrap:wrap}
+  .tc-top{flex-direction:column;align-items:stretch;gap:10px}
+  .dt-top{flex-direction:column;align-items:stretch;gap:10px}
   .time-g{grid-template-columns:repeat(3,1fr)}
   .otp-inputs{gap:8px}
   .otp-input{width:52px;height:62px;font-size:1.6rem}
@@ -877,6 +885,10 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     </div>
     <div class="tot-row"><span>Total</span><span class="tot-v" id="mTot">$100.00</span></div>
     <button class="btn-mg" onclick="buyTix()">Purchase Tickets</button>
+    <div style="text-align:center;margin-top:12px;font-size:0.6rem;color:#999;display:flex;align-items:center;justify-content:center;gap:6px;">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="#999"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+      Powered by Ticketmaster
+    </div>
   </div>
 </div>
 
@@ -915,8 +927,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     <button class="btn-mg" onclick="closeOv('depPendingOv');goDash()">Back to Dashboard</button>
   </div>
 </div>
-
-<!-- DEPOSIT SUCCESS TOAST NOTIFICATION (Hidden, triggered by JS) -->
 
 <script>
 // ─── FIREBASE CONFIG ──────────────────────────────────────────────────────────
@@ -1027,6 +1037,10 @@ var pendingDeposits = [];
 var currentUserId = '';
 var depositListener = null;
 
+function getPoweredByHTML() {
+  return '<span class="tc-powered"><svg viewBox="0 0 24 24" width="14" height="14" fill="#999"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>Powered by Ticketmaster</span>';
+}
+
 // ─── FIREBASE AUTH ────────────────────────────────────────────────────────────
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
   auth.onAuthStateChanged(function(firebaseUser) {
@@ -1055,7 +1069,6 @@ function loadUserData(firebaseUser) {
       pendingDeposits = data.pendingDeposits || [];
       isAdmin = data.isAdmin || false;
       
-      // Setup real-time listener for this user
       setupRealtimeListener(firebaseUser.uid);
     } else {
       var n = firebaseUser.displayName || firebaseUser.email.split('@')[0];
@@ -1077,13 +1090,11 @@ function loadUserData(firebaseUser) {
 }
 
 function setupRealtimeListener(uid) {
-  // Remove any existing listener
   if (depositListener) {
     depositListener();
     depositListener = null;
   }
   
-  // Set up real-time listener on the user's document
   depositListener = db.collection('users').doc(uid)
     .onSnapshot(function(doc) {
       if (doc.exists) {
@@ -1093,12 +1104,9 @@ function setupRealtimeListener(uid) {
         var oldPending = pendingDeposits.length;
         var newPending = data.pendingDeposits || [];
         
-        // Check if balance changed
         if (newBal !== oldBal) {
           bal = newBal;
           updBal();
-          // Show notification for deposit approval/rejection
-          // Find the transaction that caused the change
           var oldTxs = txs.length;
           var newTxs = data.transactions || [];
           if (newTxs.length > oldTxs) {
@@ -1109,7 +1117,6 @@ function setupRealtimeListener(uid) {
           }
         }
         
-        // Check if pending deposits changed (rejected)
         if (newPending.length !== oldPending) {
           var rejected = newPending.filter(function(d) { return d.status === 'failed'; });
           if (rejected.length > 0) {
@@ -1118,12 +1125,10 @@ function setupRealtimeListener(uid) {
           }
         }
         
-        // Update local data
         txs = data.transactions || [];
         pendingDeposits = newPending;
         bal = newBal;
         
-        // Update UI
         setupDash();
         if (isAdmin) {
           loadAdminData();
@@ -1580,7 +1585,6 @@ function approveDeposit(depositId, userId, amount) {
     toast('Deposit approved! User balance updated.', 'ok');
     loadDeposits();
     updateAdminStats();
-    // The real-time listener will update the user's balance automatically
   }).catch(function(err) {
     toast('Error approving deposit: ' + err.message, 'err');
   });
@@ -1614,7 +1618,6 @@ function rejectDeposit(depositId, userId) {
     toast('Deposit rejected!', 'ok');
     loadDeposits();
     updateAdminStats();
-    // The real-time listener will update the user's balance automatically
   }).catch(function(err) {
     toast('Error rejecting deposit: ' + err.message, 'err');
   });
@@ -1832,7 +1835,7 @@ function bldTour() {
     var bg = t.sold
       ? '<span class="badge-sold">SOLD OUT</span>'
       : '<button class="btn-tix" onclick="openTix(' + i + ')">$' + price + ' Tickets</button>';
-    h += '<div class="tc"><div class="tc-date">' + t.d + '<small>' + t.m + ' ' + t.y + '</small></div><div class="tc-info"><div class="tc-venue">' + t.v + '</div><div class="tc-city">' + t.c + '</div>' + sp + '</div>' + bg + '</div>';
+    h += '<div class="tc"><div class="tc-top"><div class="tc-date">' + t.d + '<small>' + t.m + ' ' + t.y + '</small></div><div class="tc-info"><div class="tc-venue">' + t.v + '</div><div class="tc-city">' + t.c + '</div>' + sp + '</div>' + bg + '</div><div class="tc-bottom">' + getPoweredByHTML() + '</div></div>';
   }
   el.innerHTML = h;
 }
@@ -1846,7 +1849,7 @@ function bldDashTix() {
     var b = t.sold
       ? '<button class="btn-sold">SOLD OUT</button>'
       : '<button class="btn-buy" onclick="openTix(' + i + ')">Buy $' + price + '</button>';
-    h += '<div class="dt-c"><div class="dt-d">' + t.d + '<small>' + t.m + '</small></div><div class="dt-inf"><div class="dt-v">' + t.v + '</div><div class="dt-ci">' + t.c + '</div>' + sp + '</div>' + b + '</div>';
+    h += '<div class="dt-c"><div class="dt-top"><div class="dt-d">' + t.d + '<small>' + t.m + '</small></div><div class="dt-inf"><div class="dt-v">' + t.v + '</div><div class="dt-ci">' + t.c + '</div>' + sp + '</div>' + b + '</div><div class="dt-bottom">' + getPoweredByHTML() + '</div></div>';
   }
   el.innerHTML = h;
 }
@@ -2111,7 +2114,6 @@ function setupDash() {
 }
 
 function doLogout() {
-  // Remove real-time listener
   if (depositListener) {
     depositListener();
     depositListener = null;
