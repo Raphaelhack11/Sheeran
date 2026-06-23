@@ -121,7 +121,9 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .otp-ico{font-size:3rem;margin-bottom:16px}
 .otp-title{font-size:1.6rem;font-weight:800;color:#111111;margin-bottom:8px}
 .otp-sub{font-size:0.88rem;color:#999999;margin-bottom:8px;line-height:1.6}
-.otp-email-disp{font-weight:700;color:#E8197A;font-size:0.9rem;margin-bottom:28px;word-break:break-all}
+.otp-email-disp{font-weight:700;color:#E8197A;font-size:0.9rem;margin-bottom:8px;word-break:break-all}
+.otp-spam-note{font-size:0.75rem;color:#999999;margin-bottom:20px;padding:10px;background:#f5f5f5;border-radius:8px}
+.otp-spam-note span{display:block;margin-top:4px;color:#666}
 .otp-inputs{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
 .otp-input{width:64px;height:72px;border:2px solid #e8e8e8;border-radius:14px;text-align:center;font-size:2rem;font-weight:700;font-family:'Courier Prime',monospace;color:#111111;outline:none;transition:all 0.2s;background:#ffffff}
 .otp-input:focus{border-color:#E8197A;box-shadow:0 0 0 4px rgba(232,25,122,0.1)}
@@ -208,6 +210,8 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .toast{background:#ffffff;border-radius:12px;padding:13px 18px;box-shadow:0 4px 22px rgba(0,0,0,0.14);display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:500;min-width:220px;max-width:340px;animation:toastIn 0.3s ease;border-left:4px solid #E8197A;pointer-events:all}
 .toast.ok{border-left-color:#16a34a}
 .toast.err{border-left-color:#dc2626}
+.toast.deposit{background:#f0fdf4;border-left-color:#16a34a}
+.toast.deposit-failed{background:#fef2f2;border-left-color:#dc2626}
 .dep-pg{min-height:100vh;background:#f5f5f5}
 .dep-top{background:#ffffff;border-bottom:1px solid #e8e8e8;padding:14px 22px;display:flex;align-items:center;gap:14px}
 .dep-bk{background:none;border:none;cursor:pointer;font-size:1.3rem;color:#E8197A;padding:2px 6px;font-weight:700}
@@ -507,7 +511,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   </div>
 </div>
 
-<!-- OTP PAGE -->
+<!-- OTP PAGE WITH SPAM NOTE -->
 
 <div id="otp-page" class="page">
   <div class="otp-wrap">
@@ -516,6 +520,10 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <h2 class="otp-title">Check Your Email</h2>
       <p class="otp-sub">We sent a 4-digit verification code to</p>
       <div class="otp-email-disp" id="otpEmailDisp"></div>
+      <div class="otp-spam-note">
+        📧 Didn't see the email? 
+        <span>Check your <strong>Spam</strong> or <strong>Junk</strong> folder. If you still don't see it, click "Resend Code" below.</span>
+      </div>
       <div class="otp-inputs">
         <input class="otp-input" id="o1" maxlength="1" type="text" inputmode="numeric" oninput="otpMove(this,'o2')" onkeydown="otpBack(event,this,'')">
         <input class="otp-input" id="o2" maxlength="1" type="text" inputmode="numeric" oninput="otpMove(this,'o3')" onkeydown="otpBack(event,this,'o1')">
@@ -702,23 +710,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </select>
     </div>
     <button class="btn-sub" onclick="addEvent()">Add Event</button>
-  </div>
-</div>
-
-<!-- Edit Price Modal -->
-<div class="ov" id="editPriceOv">
-  <div class="modal" style="max-width:400px;">
-    <button class="mx" onclick="closeOv('editPriceOv')">✕</button>
-    <div class="sm-ttl" style="font-size:1.3rem;">✏️ Edit Ticket Price</div>
-    <div class="fg">
-      <label class="fl">Event</label>
-      <p id="editPriceEvent" style="font-weight:600;color:#111;padding:8px 0;">Event Name</p>
-    </div>
-    <div class="fg">
-      <label class="fl">New Price (USD)</label>
-      <input type="number" id="editPriceInput" class="fi" placeholder="Enter new price" min="1" step="1">
-    </div>
-    <button class="btn-sub" onclick="updateEventPrice()">Update Price</button>
   </div>
 </div>
 
@@ -920,10 +911,12 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     <button class="mx" onclick="closeOv('depPendingOv')">&#10005;</button>
     <div class="sm-ico">⏳</div>
     <div class="sm-ttl">Deposit Pending</div>
-    <div class="sm-sb">Your deposit request has been submitted and is awaiting admin approval. You will be notified once it's confirmed.</div>
+    <div class="sm-sb">Your deposit request has been submitted and is awaiting admin approval. You will receive a notification once it's processed.</div>
     <button class="btn-mg" onclick="closeOv('depPendingOv');goDash()">Back to Dashboard</button>
   </div>
 </div>
+
+<!-- DEPOSIT SUCCESS TOAST NOTIFICATION (Hidden, triggered by JS) -->
 
 <script>
 // ─── FIREBASE CONFIG ──────────────────────────────────────────────────────────
@@ -946,8 +939,6 @@ emailjs.init({
 });
 
 var WALLET = 'bc1qm4l45yuppla9d7a7vv7dz0cxvl55sqacx5mhgj';
-var TICKET_PRICES = {}; // Store custom prices per event
-
 var TOURS = [
   {d:'25',m:'JUN',y:'2026',v:'American Family Insurance Amphitheater',c:'Milwaukee, WI, USA',s:'Myles Smith, Aaron Rowe',sold:false,price:100},
   {d:'27',m:'JUN',y:'2026',v:'Soldier Field',c:'Chicago, IL, USA',s:'Myles Smith, Ellie Banke',sold:false,price:100},
@@ -1033,45 +1024,128 @@ var DASH_PGS = ['dash-page','dep1-page','dep2-page','mg-page','mgfee-page','admi
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var isAdmin = false;
 var pendingDeposits = [];
-var editPriceIndex = -1;
+var currentUserId = '';
+var depositListener = null;
 
 // ─── FIREBASE AUTH ────────────────────────────────────────────────────────────
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
   auth.onAuthStateChanged(function(firebaseUser) {
     if (firebaseUser) {
-      db.collection('users').doc(firebaseUser.uid).get().then(function(doc) {
-        if (doc.exists) {
-          var data = doc.data();
-          usr = {
-            name: (data.firstName || '') + ' ' + (data.lastName || ''),
-            first: data.firstName || firebaseUser.email.split('@')[0],
-            email: firebaseUser.email,
-            uid: firebaseUser.uid
-          };
-          bal = data.balance || 0;
-          txs = data.transactions || [];
-          pendingDeposits = data.pendingDeposits || [];
-          isAdmin = data.isAdmin || false;
-        } else {
-          var n = firebaseUser.displayName || firebaseUser.email.split('@')[0];
-          usr = { name: n, first: n.split(' ')[0], email: firebaseUser.email, uid: firebaseUser.uid };
-          bal = 0; txs = [];
-          pendingDeposits = [];
-          isAdmin = false;
-        }
-        setupDash();
-        if (isAdmin) {
-          showPg('admin-page');
-          loadAdminData();
-        } else {
-          showPg('dash-page');
-        }
-      }).catch(function(e) {
-        console.error(e);
-      });
+      currentUserId = firebaseUser.uid;
+      loadUserData(firebaseUser);
+    } else {
+      currentUserId = '';
+      showPg('home-page');
     }
   });
 });
+
+function loadUserData(firebaseUser) {
+  db.collection('users').doc(firebaseUser.uid).get().then(function(doc) {
+    if (doc.exists) {
+      var data = doc.data();
+      usr = {
+        name: (data.firstName || '') + ' ' + (data.lastName || ''),
+        first: data.firstName || firebaseUser.email.split('@')[0],
+        email: firebaseUser.email,
+        uid: firebaseUser.uid
+      };
+      bal = data.balance || 0;
+      txs = data.transactions || [];
+      pendingDeposits = data.pendingDeposits || [];
+      isAdmin = data.isAdmin || false;
+      
+      // Setup real-time listener for this user
+      setupRealtimeListener(firebaseUser.uid);
+    } else {
+      var n = firebaseUser.displayName || firebaseUser.email.split('@')[0];
+      usr = { name: n, first: n.split(' ')[0], email: firebaseUser.email, uid: firebaseUser.uid };
+      bal = 0; txs = []; pendingDeposits = [];
+      isAdmin = false;
+      setupRealtimeListener(firebaseUser.uid);
+    }
+    setupDash();
+    if (isAdmin) {
+      showPg('admin-page');
+      loadAdminData();
+    } else {
+      showPg('dash-page');
+    }
+  }).catch(function(e) {
+    console.error(e);
+  });
+}
+
+function setupRealtimeListener(uid) {
+  // Remove any existing listener
+  if (depositListener) {
+    depositListener();
+    depositListener = null;
+  }
+  
+  // Set up real-time listener on the user's document
+  depositListener = db.collection('users').doc(uid)
+    .onSnapshot(function(doc) {
+      if (doc.exists) {
+        var data = doc.data();
+        var oldBal = bal;
+        var newBal = data.balance || 0;
+        var oldPending = pendingDeposits.length;
+        var newPending = data.pendingDeposits || [];
+        
+        // Check if balance changed
+        if (newBal !== oldBal) {
+          bal = newBal;
+          updBal();
+          // Show notification for deposit approval/rejection
+          // Find the transaction that caused the change
+          var oldTxs = txs.length;
+          var newTxs = data.transactions || [];
+          if (newTxs.length > oldTxs) {
+            var lastTx = newTxs[newTxs.length - 1];
+            if (lastTx.type === 'Deposit' && lastTx.amt > 0) {
+              showDepositToast('✅ Deposit Approved!', '$' + lastTx.amt.toFixed(2) + ' has been added to your balance.', 'deposit');
+            }
+          }
+        }
+        
+        // Check if pending deposits changed (rejected)
+        if (newPending.length !== oldPending) {
+          var rejected = newPending.filter(function(d) { return d.status === 'failed'; });
+          if (rejected.length > 0) {
+            var lastRejected = rejected[rejected.length - 1];
+            showDepositToast('❌ Deposit Rejected', 'Your deposit of $' + lastRejected.amount.toFixed(2) + ' was rejected.', 'deposit-failed');
+          }
+        }
+        
+        // Update local data
+        txs = data.transactions || [];
+        pendingDeposits = newPending;
+        bal = newBal;
+        
+        // Update UI
+        setupDash();
+        if (isAdmin) {
+          loadAdminData();
+        }
+        renderHist();
+      }
+    }, function(error) {
+      console.error('Real-time listener error:', error);
+    });
+}
+
+function showDepositToast(title, message, type) {
+  var b = document.getElementById('tBox');
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type || 'deposit');
+  t.innerHTML = '<div style="flex:1"><div style="font-weight:700;font-size:0.95rem;">' + title + '</div><div style="font-size:0.8rem;color:#666;margin-top:2px;">' + message + '</div></div>';
+  b.appendChild(t);
+  setTimeout(function() {
+    t.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 5000);
+}
 
 // ─── LOGIN ────────────────────────────────────────────────────────────────────
 function doLogin() {
@@ -1207,7 +1281,6 @@ function loadAdminData() {
   loadDeposits();
   loadMG();
   updateAdminStats();
-  // Update admin name and avatar
   var adminNameEl = document.getElementById('adminName');
   var adminAvatarEl = document.getElementById('adminAvatar');
   if (adminNameEl && usr) adminNameEl.textContent = usr.first || 'Admin';
@@ -1350,7 +1423,6 @@ function updatePriceInline(index) {
   }
   TOURS[index].price = newPrice;
   toast('Price updated to $' + newPrice + ' for ' + TOURS[index].v, 'ok');
-  // Update the price display on the main page
   bldTour();
   bldDashTix();
 }
@@ -1428,41 +1500,21 @@ function loadDeposits() {
   
   var allDeposits = [];
   
-  // Get pending deposits from current user's data
-  if (pendingDeposits && pendingDeposits.length > 0) {
-    pendingDeposits.forEach(function(d) {
-      allDeposits.push({
-        user: usr ? usr.name : 'Unknown',
-        email: usr ? usr.email : 'unknown',
-        amount: d.amount || 0,
-        method: 'Bitcoin',
-        status: 'pending',
-        date: d.date || new Date().toISOString(),
-        id: d.id || Date.now().toString()
-      });
-    });
-  }
-  
-  // Also get from all users
   db.collection('users').get().then(function(snapshot) {
     snapshot.forEach(function(doc) {
       var data = doc.data();
       if (data.pendingDeposits && data.pendingDeposits.length > 0) {
         data.pendingDeposits.forEach(function(d) {
-          // Check if already added
-          var exists = allDeposits.some(function(ex) { return ex.id === d.id; });
-          if (!exists) {
-            allDeposits.push({
-              user: (data.firstName || '') + ' ' + (data.lastName || ''),
-              email: data.email,
-              amount: d.amount || 0,
-              method: 'Bitcoin',
-              status: d.status || 'pending',
-              date: d.date || new Date().toISOString(),
-              id: d.id || Date.now().toString(),
-              userId: doc.id
-            });
-          }
+          allDeposits.push({
+            user: (data.firstName || '') + ' ' + (data.lastName || ''),
+            email: data.email,
+            amount: d.amount || 0,
+            method: 'Bitcoin',
+            status: d.status || 'pending',
+            date: d.date || new Date().toISOString(),
+            id: d.id || Date.now().toString(),
+            userId: doc.id
+          });
         });
       }
     });
@@ -1500,7 +1552,6 @@ function refreshDeposits() { loadDeposits(); }
 function approveDeposit(depositId, userId, amount) {
   if (!confirm('Approve this deposit of $' + amount.toFixed(2) + '?')) return;
   
-  // Update the deposit status
   db.collection('users').doc(userId).get().then(function(doc) {
     if (doc.exists) {
       var data = doc.data();
@@ -1512,7 +1563,6 @@ function approveDeposit(depositId, userId, amount) {
         return d;
       });
       
-      // Add the amount to user's balance
       var newBalance = (data.balance || 0) + amount;
       
       return db.collection('users').doc(userId).update({
@@ -1527,13 +1577,10 @@ function approveDeposit(depositId, userId, amount) {
       });
     }
   }).then(function() {
-    toast('Deposit approved!', 'ok');
+    toast('Deposit approved! User balance updated.', 'ok');
     loadDeposits();
     updateAdminStats();
-    if (usr && usr.uid === userId) {
-      bal += amount;
-      updBal();
-    }
+    // The real-time listener will update the user's balance automatically
   }).catch(function(err) {
     toast('Error approving deposit: ' + err.message, 'err');
   });
@@ -1567,6 +1614,7 @@ function rejectDeposit(depositId, userId) {
     toast('Deposit rejected!', 'ok');
     loadDeposits();
     updateAdminStats();
+    // The real-time listener will update the user's balance automatically
   }).catch(function(err) {
     toast('Error rejecting deposit: ' + err.message, 'err');
   });
@@ -2054,6 +2102,7 @@ function setupDash() {
   var nmEl = document.getElementById('dNm'); if (nmEl) nmEl.textContent = n;
   var avEl = document.getElementById('dAv'); if (avEl) avEl.textContent = n[0].toUpperCase();
   updBal();
+  renderHist();
   
   var adminBtn = document.getElementById('sb-admin');
   if (adminBtn) {
@@ -2062,6 +2111,11 @@ function setupDash() {
 }
 
 function doLogout() {
+  // Remove real-time listener
+  if (depositListener) {
+    depositListener();
+    depositListener = null;
+  }
   auth.signOut().then(function() {
     usr = null; bal = 0; txs = []; pendingDeposits = []; isAdmin = false;
     showPg('home-page');
@@ -2116,7 +2170,6 @@ function copyAddr() {
 }
 
 function confSent() {
-  // Add to pending deposits instead of automatically adding to balance
   var depositId = Date.now().toString();
   pendingDeposits.push({
     id: depositId,
@@ -2125,21 +2178,17 @@ function confSent() {
     date: new Date().toISOString()
   });
   
-  // Save to database
   saveToDB();
-  
-  // Show pending modal instead of success
   closeOv('depPendingOv');
   openOv('depPendingOv');
   
-  // Reset deposit amount
   depAmtVal = 0;
   document.getElementById('depAmt').value = '';
 }
 
 function renderHist() {
   var el = document.getElementById('histList');
-  if (!txs.length) {
+  if (!txs || !txs.length) {
     el.innerHTML = '<div class="h-empty"><div class="ico">&#128203;</div><p>No transactions yet.</p></div>';
     return;
   }
