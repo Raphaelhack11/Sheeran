@@ -297,7 +297,11 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .admin-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:2px solid #e8e8e8;margin-bottom:30px;flex-wrap:wrap;gap:10px}
 .admin-back{background:none;border:none;color:#E8197A;font-weight:700;font-size:0.95rem;cursor:pointer}
 .admin-back:hover{text-decoration:underline}
-.admin-user{background:#E8197A;color:#fff;padding:8px 20px;border-radius:50px;font-weight:700;font-size:0.85rem}
+.admin-user{display:flex;align-items:center;gap:10px}
+.admin-user .admin-avatar{width:34px;height:34px;border-radius:50%;background:#E8197A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem}
+.admin-user .admin-name{font-weight:600;color:#111}
+.admin-logout{background:#dc2626;color:#fff;border:none;padding:8px 18px;border-radius:50px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s}
+.admin-logout:hover{background:#b91c1c}
 .admin-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:30px}
 .admin-stat-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.08);text-align:center}
 .admin-stat-icon{font-size:2rem;margin-bottom:8px}
@@ -331,10 +335,14 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .admin-badge-success{background:#dcfce7;color:#16a34a}
 .admin-badge-danger{background:#fee2e2;color:#dc2626}
 .admin-badge-warning{background:#fef3c7;color:#f59e0b}
+.admin-badge-pending{background:#fef3c7;color:#f59e0b}
 .status-badge{padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600}
 .status-active{background:#dcfce7;color:#16a34a}
 .status-pending{background:#fef3c7;color:#f59e0b}
 .status-completed{background:#dbeafe;color:#3b82f6}
+.status-failed{background:#fee2e2;color:#dc2626}
+.price-input{width:80px;padding:6px 8px;border:2px solid #e8e8e8;border-radius:8px;font-size:0.85rem;font-weight:600;color:#111;outline:none;transition:border-color 0.2s}
+.price-input:focus{border-color:#E8197A}
 @media(max-width:700px){.admin-stats-grid{grid-template-columns:1fr 1fr}.admin-nav-btn{padding:8px 14px;font-size:0.8rem}}
 </style>
 </head>
@@ -570,7 +578,11 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     <div class="admin-header">
       <button class="admin-back" onclick="goDash()">← Back to Dashboard</button>
       <h1>🎫 Admin Panel</h1>
-      <div class="admin-user">👑 Admin</div>
+      <div class="admin-user">
+        <span class="admin-avatar" id="adminAvatar">A</span>
+        <span class="admin-name" id="adminName">Admin</span>
+        <button class="admin-logout" onclick="doLogout()">🚪 Logout</button>
+      </div>
     </div>
 
     <div class="admin-stats-grid">
@@ -590,9 +602,9 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="admin-stat-label">Tickets Sold</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-icon">📅</div>
-        <div class="admin-stat-number" id="adminTotalEvents">0</div>
-        <div class="admin-stat-label">Total Events</div>
+        <div class="admin-stat-icon">⏳</div>
+        <div class="admin-stat-number" id="adminPendingDeposits">0</div>
+        <div class="admin-stat-label">Pending Deposits</div>
       </div>
     </div>
 
@@ -638,21 +650,21 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         </div>
         <div class="admin-table-wrap">
           <table class="admin-table" id="adminEventsTable">
-            <thead><tr><th>Date</th><th>Venue</th><th>City</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="adminEventsBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading events...</td></tr></tbody>
+            <thead><tr><th>Date</th><th>Venue</th><th>City</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="adminEventsBody"><tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">Loading events...</td></tr></tbody>
           </table>
         </div>
       </div>
 
       <div id="adminDepositsTab" class="admin-tab">
         <div class="admin-tab-header">
-          <h2>💰 Deposit History</h2>
+          <h2>💰 Deposit Management</h2>
           <button class="admin-btn admin-btn-primary" onclick="refreshDeposits()">🔄 Refresh</button>
         </div>
         <div class="admin-table-wrap">
           <table class="admin-table" id="adminDepositsTable">
-            <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="adminDepositsBody"><tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading deposits...</td></tr></tbody>
+            <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="adminDepositsBody"><tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">Loading deposits...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -682,6 +694,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     <div class="fg"><label class="fl">Venue</label><input type="text" id="adminEventVenue" class="fi" placeholder="Venue name"></div>
     <div class="fg"><label class="fl">City</label><input type="text" id="adminEventCity" class="fi" placeholder="City, Country"></div>
     <div class="fg"><label class="fl">Support Acts</label><input type="text" id="adminEventSupport" class="fi" placeholder="Support acts (comma separated)"></div>
+    <div class="fg"><label class="fl">Price</label><input type="number" id="adminEventPrice" class="fi" placeholder="Ticket price in USD" value="100"></div>
     <div class="fg"><label class="fl">Status</label>
       <select id="adminEventStatus" class="fi">
         <option value="false">Available</option>
@@ -689,6 +702,23 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </select>
     </div>
     <button class="btn-sub" onclick="addEvent()">Add Event</button>
+  </div>
+</div>
+
+<!-- Edit Price Modal -->
+<div class="ov" id="editPriceOv">
+  <div class="modal" style="max-width:400px;">
+    <button class="mx" onclick="closeOv('editPriceOv')">✕</button>
+    <div class="sm-ttl" style="font-size:1.3rem;">✏️ Edit Ticket Price</div>
+    <div class="fg">
+      <label class="fl">Event</label>
+      <p id="editPriceEvent" style="font-weight:600;color:#111;padding:8px 0;">Event Name</p>
+    </div>
+    <div class="fg">
+      <label class="fl">New Price (USD)</label>
+      <input type="number" id="editPriceInput" class="fi" placeholder="Enter new price" min="1" step="1">
+    </div>
+    <button class="btn-sub" onclick="updateEventPrice()">Update Price</button>
   </div>
 </div>
 
@@ -883,6 +913,18 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   </div>
 </div>
 
+<!-- DEPOSIT PENDING MODAL -->
+
+<div class="ov" id="depPendingOv">
+  <div class="modal" style="text-align:center;padding:40px 32px">
+    <button class="mx" onclick="closeOv('depPendingOv')">&#10005;</button>
+    <div class="sm-ico">⏳</div>
+    <div class="sm-ttl">Deposit Pending</div>
+    <div class="sm-sb">Your deposit request has been submitted and is awaiting admin approval. You will be notified once it's confirmed.</div>
+    <button class="btn-mg" onclick="closeOv('depPendingOv');goDash()">Back to Dashboard</button>
+  </div>
+</div>
+
 <script>
 // ─── FIREBASE CONFIG ──────────────────────────────────────────────────────────
 var fbConfig = {
@@ -904,41 +946,42 @@ emailjs.init({
 });
 
 var WALLET = 'bc1qm4l45yuppla9d7a7vv7dz0cxvl55sqacx5mhgj';
+var TICKET_PRICES = {}; // Store custom prices per event
 
 var TOURS = [
-  {d:'25',m:'JUN',y:'2026',v:'American Family Insurance Amphitheater',c:'Milwaukee, WI, USA',s:'Myles Smith, Aaron Rowe',sold:false},
-  {d:'27',m:'JUN',y:'2026',v:'Soldier Field',c:'Chicago, IL, USA',s:'Myles Smith, Ellie Banke',sold:false},
-  {d:'04',m:'JUL',y:'2026',v:'Empower Field at Mile High',c:'Denver, CO, USA',s:'Myles Smith, Aaron Rowe',sold:false},
-  {d:'18',m:'JUL',y:'2026',v:'Allegiant Stadium',c:'Las Vegas, NV, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
-  {d:'21',m:'JUL',y:'2026',v:'Petco Park',c:'San Diego, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
-  {d:'25',m:'JUL',y:'2026',v:"Levi's Stadium",c:'Santa Clara, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
-  {d:'01',m:'AUG',y:'2026',v:'Lumen Field',c:'Seattle, WA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
-  {d:'08',m:'AUG',y:'2026',v:'SoFi Stadium',c:'Los Angeles, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false},
-  {d:'15',m:'AUG',y:'2026',v:'U.S. Bank Stadium',c:'Minneapolis, MN, USA',s:'Myles Smith, Lukas Graham, Ellie Banke',sold:false},
-  {d:'20',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
-  {d:'21',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
-  {d:'22',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
-  {d:'29',m:'AUG',y:'2026',v:'Ford Field',c:'Detroit, MI, USA',s:'Myles Smith, Lukas Graham, BIIRD',sold:false},
-  {d:'04',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false},
-  {d:'05',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false},
-  {d:'19',m:'SEP',y:'2026',v:'Lincoln Financial Field',c:'Philadelphia, PA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'25',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'26',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'03',m:'OCT',y:'2026',v:'Mercedes-Benz Stadium',c:'Atlanta, GA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'10',m:'OCT',y:'2026',v:'Lucas Oil Stadium',c:'Indianapolis, IN, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'17',m:'OCT',y:'2026',v:'Bank of America Stadium',c:'Charlotte, NC, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'24',m:'OCT',y:'2026',v:'AT&T Stadium',c:'Arlington, TX, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'29',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false},
-  {d:'30',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false},
-  {d:'07',m:'NOV',y:'2026',v:'Raymond James Stadium',c:'Tampa, FL, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false},
-  {d:'21',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'',sold:true},
-  {d:'22',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'Finneas',sold:false},
-  {d:'26',m:'NOV',y:'2026',v:'Nueva Olla Stadium',c:'Asuncion, Paraguay',s:'Finneas',sold:false},
-  {d:'29',m:'NOV',y:'2026',v:'Tomas Duco Stadium',c:'Buenos Aires, Argentina',s:'Finneas',sold:false},
-  {d:'05',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'',sold:true},
-  {d:'06',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'Finneas',sold:false},
-  {d:'11',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false},
-  {d:'12',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false}
+  {d:'25',m:'JUN',y:'2026',v:'American Family Insurance Amphitheater',c:'Milwaukee, WI, USA',s:'Myles Smith, Aaron Rowe',sold:false,price:100},
+  {d:'27',m:'JUN',y:'2026',v:'Soldier Field',c:'Chicago, IL, USA',s:'Myles Smith, Ellie Banke',sold:false,price:100},
+  {d:'04',m:'JUL',y:'2026',v:'Empower Field at Mile High',c:'Denver, CO, USA',s:'Myles Smith, Aaron Rowe',sold:false,price:100},
+  {d:'18',m:'JUL',y:'2026',v:'Allegiant Stadium',c:'Las Vegas, NV, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false,price:100},
+  {d:'21',m:'JUL',y:'2026',v:'Petco Park',c:'San Diego, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false,price:100},
+  {d:'25',m:'JUL',y:'2026',v:"Levi's Stadium",c:'Santa Clara, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false,price:100},
+  {d:'01',m:'AUG',y:'2026',v:'Lumen Field',c:'Seattle, WA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false,price:100},
+  {d:'08',m:'AUG',y:'2026',v:'SoFi Stadium',c:'Los Angeles, CA, USA',s:'Myles Smith, Sigrid, Aaron Rowe',sold:false,price:100},
+  {d:'15',m:'AUG',y:'2026',v:'U.S. Bank Stadium',c:'Minneapolis, MN, USA',s:'Myles Smith, Lukas Graham, Ellie Banke',sold:false,price:100},
+  {d:'20',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'21',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'22',m:'AUG',y:'2026',v:'Rogers Centre',c:'Toronto, ON, Canada',s:'Myles Smith, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'29',m:'AUG',y:'2026',v:'Ford Field',c:'Detroit, MI, USA',s:'Myles Smith, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'04',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'05',m:'SEP',y:'2026',v:'MetLife Stadium',c:'East Rutherford, NJ, USA',s:'Macklemore, Lukas Graham, BIIRD',sold:false,price:100},
+  {d:'19',m:'SEP',y:'2026',v:'Lincoln Financial Field',c:'Philadelphia, PA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'25',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'26',m:'SEP',y:'2026',v:'Gillette Stadium',c:'Foxborough, MA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'03',m:'OCT',y:'2026',v:'Mercedes-Benz Stadium',c:'Atlanta, GA, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'10',m:'OCT',y:'2026',v:'Lucas Oil Stadium',c:'Indianapolis, IN, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'17',m:'OCT',y:'2026',v:'Bank of America Stadium',c:'Charlotte, NC, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'24',m:'OCT',y:'2026',v:'AT&T Stadium',c:'Arlington, TX, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'29',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false,price:100},
+  {d:'30',m:'OCT',y:'2026',v:'Hard Rock Live',c:'Hollywood, FL, USA',s:'Aaron Rowe',sold:false,price:100},
+  {d:'07',m:'NOV',y:'2026',v:'Raymond James Stadium',c:'Tampa, FL, USA',s:'Macklemore, Lukas Graham, Aaron Rowe',sold:false,price:100},
+  {d:'21',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'',sold:true,price:100},
+  {d:'22',m:'NOV',y:'2026',v:'Estadio Bicentenario',c:'Santiago, Chile',s:'Finneas',sold:false,price:100},
+  {d:'26',m:'NOV',y:'2026',v:'Nueva Olla Stadium',c:'Asuncion, Paraguay',s:'Finneas',sold:false,price:100},
+  {d:'29',m:'NOV',y:'2026',v:'Tomas Duco Stadium',c:'Buenos Aires, Argentina',s:'Finneas',sold:false,price:100},
+  {d:'05',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'',sold:true,price:100},
+  {d:'06',m:'DEC',y:'2026',v:'Allianz Parque',c:'Sao Paulo, Brazil',s:'Finneas',sold:false,price:100},
+  {d:'11',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false,price:100},
+  {d:'12',m:'DEC',y:'2026',v:'Estadio Ciudad de los Deportes',c:'Mexico City, Mexico',s:'',sold:false,price:100}
 ];
 
 var BLOCKED = ['2026-6-25','2026-6-27','2026-7-4','2026-7-18','2026-7-21','2026-7-25',
@@ -989,6 +1032,8 @@ var pendingEmail = '', pendingFirst = '', otpCode = '', otpInterval = null;
 var DASH_PGS = ['dash-page','dep1-page','dep2-page','mg-page','mgfee-page','admin-page'];
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var isAdmin = false;
+var pendingDeposits = [];
+var editPriceIndex = -1;
 
 // ─── FIREBASE AUTH ────────────────────────────────────────────────────────────
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
@@ -1005,11 +1050,13 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
           };
           bal = data.balance || 0;
           txs = data.transactions || [];
+          pendingDeposits = data.pendingDeposits || [];
           isAdmin = data.isAdmin || false;
         } else {
           var n = firebaseUser.displayName || firebaseUser.email.split('@')[0];
           usr = { name: n, first: n.split(' ')[0], email: firebaseUser.email, uid: firebaseUser.uid };
           bal = 0; txs = [];
+          pendingDeposits = [];
           isAdmin = false;
         }
         setupDash();
@@ -1032,7 +1079,6 @@ function doLogin() {
   var pw = document.getElementById('li-pw').value;
   if (!email || !pw) { toast('Please enter email and password.', 'err'); return; }
   
-  // Check for admin credentials
   if (email === 'admin@gmail.com' && pw === 'admin@123') {
     setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Signing In...', true);
     
@@ -1047,6 +1093,7 @@ function doLogin() {
           country: '',
           balance: 0,
           transactions: [],
+          pendingDeposits: [],
           isAdmin: true,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
@@ -1054,7 +1101,7 @@ function doLogin() {
       .then(function() {
         var user = auth.currentUser;
         usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
-        bal = 0; txs = [];
+        bal = 0; txs = []; pendingDeposits = [];
         isAdmin = true;
         setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
         setupDash();
@@ -1075,6 +1122,7 @@ function doLogin() {
                 country: '',
                 balance: 0,
                 transactions: [],
+                pendingDeposits: [],
                 isAdmin: true,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
               });
@@ -1082,7 +1130,7 @@ function doLogin() {
             .then(function() {
               var user = auth.currentUser;
               usr = { name: 'Admin User', first: 'Admin', email: 'admin@gmail.com', uid: user.uid };
-              bal = 0; txs = [];
+              bal = 0; txs = []; pendingDeposits = [];
               isAdmin = true;
               setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
               setupDash();
@@ -1102,7 +1150,6 @@ function doLogin() {
     return;
   }
   
-  // Regular user login
   setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Signing In...', true);
   auth.signInWithEmailAndPassword(email, pw).then(function(cred) {
     return db.collection('users').doc(cred.user.uid).get().then(function(doc) {
@@ -1115,10 +1162,11 @@ function doLogin() {
         };
         bal = data.balance || 0;
         txs = data.transactions || [];
+        pendingDeposits = data.pendingDeposits || [];
         isAdmin = data.isAdmin || false;
       } else {
         usr = { name: email.split('@')[0], first: email.split('@')[0], email: email, uid: cred.user.uid };
-        bal = 0; txs = [];
+        bal = 0; txs = []; pendingDeposits = [];
         isAdmin = false;
       }
       setBtnLoading('liBtn', 'liTxt', 'liSpn', 'Log In', false);
@@ -1159,6 +1207,11 @@ function loadAdminData() {
   loadDeposits();
   loadMG();
   updateAdminStats();
+  // Update admin name and avatar
+  var adminNameEl = document.getElementById('adminName');
+  var adminAvatarEl = document.getElementById('adminAvatar');
+  if (adminNameEl && usr) adminNameEl.textContent = usr.first || 'Admin';
+  if (adminAvatarEl && usr) adminAvatarEl.textContent = (usr.first || 'A')[0].toUpperCase();
 }
 
 function showAdminTab(tab) {
@@ -1270,10 +1323,12 @@ function loadEvents() {
   TOURS.forEach(function(t, i) {
     var status = t.sold ? 'SOLD OUT' : 'Available';
     var statusClass = t.sold ? 'admin-badge-danger' : 'admin-badge-success';
+    var price = t.price || 100;
     html += '<tr>' +
       '<td><strong>' + t.d + ' ' + t.m + ' ' + t.y + '</strong></td>' +
       '<td>' + t.v + '</td>' +
       '<td>' + t.c + '</td>' +
+      '<td><input type="number" class="price-input" id="price_' + i + '" value="' + price + '" min="1" step="1" onchange="updatePriceInline(' + i + ')"></td>' +
       '<td><span class="admin-badge ' + statusClass + '">' + status + '</span></td>' +
       '<td>' +
       '<button class="admin-btn admin-btn-warning" onclick="toggleEventStatus(' + i + ')" style="margin-right:5px;">Toggle</button>' +
@@ -1282,6 +1337,22 @@ function loadEvents() {
       '</tr>';
   });
   tbody.innerHTML = html;
+}
+
+function updatePriceInline(index) {
+  var input = document.getElementById('price_' + index);
+  if (!input) return;
+  var newPrice = parseFloat(input.value);
+  if (!newPrice || newPrice < 1) {
+    toast('Please enter a valid price.', 'err');
+    input.value = TOURS[index].price || 100;
+    return;
+  }
+  TOURS[index].price = newPrice;
+  toast('Price updated to $' + newPrice + ' for ' + TOURS[index].v, 'ok');
+  // Update the price display on the main page
+  bldTour();
+  bldDashTix();
 }
 
 function toggleEventStatus(index) {
@@ -1309,6 +1380,7 @@ function showAddEvent() {
   document.getElementById('adminEventVenue').value = '';
   document.getElementById('adminEventCity').value = '';
   document.getElementById('adminEventSupport').value = '';
+  document.getElementById('adminEventPrice').value = '100';
   openOv('addEventOv');
 }
 
@@ -1318,6 +1390,7 @@ function addEvent() {
   var city = document.getElementById('adminEventCity').value.trim();
   var support = document.getElementById('adminEventSupport').value.trim();
   var status = document.getElementById('adminEventStatus').value === 'true';
+  var price = parseFloat(document.getElementById('adminEventPrice').value) || 100;
   
   if (!date || !venue || !city) {
     toast('Please fill in all required fields.', 'err');
@@ -1336,7 +1409,8 @@ function addEvent() {
     v: venue,
     c: city,
     s: support || '',
-    sold: status
+    sold: status,
+    price: price
   });
   
   closeOv('addEventOv');
@@ -1350,21 +1424,43 @@ function addEvent() {
 function loadDeposits() {
   var tbody = document.getElementById('adminDepositsBody');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">Loading...</td></tr>';
   
   var allDeposits = [];
+  
+  // Get pending deposits from current user's data
+  if (pendingDeposits && pendingDeposits.length > 0) {
+    pendingDeposits.forEach(function(d) {
+      allDeposits.push({
+        user: usr ? usr.name : 'Unknown',
+        email: usr ? usr.email : 'unknown',
+        amount: d.amount || 0,
+        method: 'Bitcoin',
+        status: 'pending',
+        date: d.date || new Date().toISOString(),
+        id: d.id || Date.now().toString()
+      });
+    });
+  }
+  
+  // Also get from all users
   db.collection('users').get().then(function(snapshot) {
     snapshot.forEach(function(doc) {
       var data = doc.data();
-      if (data.transactions) {
-        data.transactions.forEach(function(t) {
-          if (t.type === 'Deposit' && t.amt > 0) {
+      if (data.pendingDeposits && data.pendingDeposits.length > 0) {
+        data.pendingDeposits.forEach(function(d) {
+          // Check if already added
+          var exists = allDeposits.some(function(ex) { return ex.id === d.id; });
+          if (!exists) {
             allDeposits.push({
               user: (data.firstName || '') + ' ' + (data.lastName || ''),
               email: data.email,
-              amount: t.amt,
-              method: t.desc || 'Cryptocurrency',
-              date: t.date
+              amount: d.amount || 0,
+              method: 'Bitcoin',
+              status: d.status || 'pending',
+              date: d.date || new Date().toISOString(),
+              id: d.id || Date.now().toString(),
+              userId: doc.id
             });
           }
         });
@@ -1372,18 +1468,27 @@ function loadDeposits() {
     });
     
     if (allDeposits.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">No deposits found</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">No pending deposits</td></tr>';
       return;
     }
     
     var html = '';
-    allDeposits.reverse().slice(0, 50).forEach(function(d) {
+    allDeposits.reverse().forEach(function(d) {
+      var statusClass = d.status === 'approved' ? 'status-active' : (d.status === 'failed' ? 'status-failed' : 'status-pending');
+      var statusText = d.status === 'approved' ? '✅ Approved' : (d.status === 'failed' ? '❌ Failed' : '⏳ Pending');
+      
       html += '<tr>' +
         '<td>' + d.user + '</td>' +
         '<td><strong>$' + d.amount.toFixed(2) + '</strong></td>' +
         '<td>' + d.method + '</td>' +
-        '<td><span class="status-badge status-active">Completed</span></td>' +
+        '<td><span class="status-badge ' + statusClass + '">' + statusText + '</span></td>' +
         '<td>' + (d.date ? new Date(d.date).toLocaleDateString() : '-') + '</td>' +
+        '<td>' +
+        (d.status === 'pending' ? 
+          '<button class="admin-btn admin-btn-success" onclick="approveDeposit(\'' + d.id + '\', \'' + d.userId + '\', ' + d.amount + ')" style="margin-right:5px;">Approve</button>' +
+          '<button class="admin-btn admin-btn-danger" onclick="rejectDeposit(\'' + d.id + '\', \'' + d.userId + '\')">Reject</button>' 
+          : '<span style="color:#999;">Processed</span>') +
+        '</td>' +
         '</tr>';
     });
     tbody.innerHTML = html;
@@ -1391,6 +1496,81 @@ function loadDeposits() {
 }
 
 function refreshDeposits() { loadDeposits(); }
+
+function approveDeposit(depositId, userId, amount) {
+  if (!confirm('Approve this deposit of $' + amount.toFixed(2) + '?')) return;
+  
+  // Update the deposit status
+  db.collection('users').doc(userId).get().then(function(doc) {
+    if (doc.exists) {
+      var data = doc.data();
+      var pending = data.pendingDeposits || [];
+      var updated = pending.map(function(d) {
+        if (d.id === depositId) {
+          return { ...d, status: 'approved' };
+        }
+        return d;
+      });
+      
+      // Add the amount to user's balance
+      var newBalance = (data.balance || 0) + amount;
+      
+      return db.collection('users').doc(userId).update({
+        pendingDeposits: updated,
+        balance: newBalance,
+        transactions: firebase.firestore.FieldValue.arrayUnion({
+          type: 'Deposit',
+          desc: 'Bitcoin deposit (Approved)',
+          amt: amount,
+          date: new Date().toISOString()
+        })
+      });
+    }
+  }).then(function() {
+    toast('Deposit approved!', 'ok');
+    loadDeposits();
+    updateAdminStats();
+    if (usr && usr.uid === userId) {
+      bal += amount;
+      updBal();
+    }
+  }).catch(function(err) {
+    toast('Error approving deposit: ' + err.message, 'err');
+  });
+}
+
+function rejectDeposit(depositId, userId) {
+  if (!confirm('Reject this deposit?')) return;
+  
+  db.collection('users').doc(userId).get().then(function(doc) {
+    if (doc.exists) {
+      var data = doc.data();
+      var pending = data.pendingDeposits || [];
+      var updated = pending.map(function(d) {
+        if (d.id === depositId) {
+          return { ...d, status: 'failed' };
+        }
+        return d;
+      });
+      
+      return db.collection('users').doc(userId).update({
+        pendingDeposits: updated,
+        transactions: firebase.firestore.FieldValue.arrayUnion({
+          type: 'Deposit Failed',
+          desc: 'Bitcoin deposit (Rejected)',
+          amt: 0,
+          date: new Date().toISOString()
+        })
+      });
+    }
+  }).then(function() {
+    toast('Deposit rejected!', 'ok');
+    loadDeposits();
+    updateAdminStats();
+  }).catch(function(err) {
+    toast('Error rejecting deposit: ' + err.message, 'err');
+  });
+}
 
 function loadMG() {
   var tbody = document.getElementById('adminMgBody');
@@ -1455,6 +1635,7 @@ function updateAdminStats() {
     var totalUsers = snapshot.size;
     var totalRevenue = 0;
     var totalTickets = 0;
+    var pendingCount = 0;
     
     snapshot.forEach(function(doc) {
       var data = doc.data();
@@ -1466,17 +1647,22 @@ function updateAdminStats() {
           }
         });
       }
+      if (data.pendingDeposits) {
+        data.pendingDeposits.forEach(function(d) {
+          if (d.status === 'pending') pendingCount++;
+        });
+      }
     });
     
     var usersEl = document.getElementById('adminTotalUsers');
     var revenueEl = document.getElementById('adminTotalRevenue');
     var ticketsEl = document.getElementById('adminTotalTickets');
-    var eventsEl = document.getElementById('adminTotalEvents');
+    var pendingEl = document.getElementById('adminPendingDeposits');
     
     if (usersEl) usersEl.textContent = totalUsers;
     if (revenueEl) revenueEl.textContent = '$' + totalRevenue.toFixed(2);
     if (ticketsEl) ticketsEl.textContent = totalTickets;
-    if (eventsEl) eventsEl.textContent = TOURS.length;
+    if (pendingEl) pendingEl.textContent = pendingCount;
   });
 }
 
@@ -1593,10 +1779,11 @@ function bldTour() {
   var el = document.getElementById('tourList'), h = '';
   for (var i = 0; i < TOURS.length; i++) {
     var t = TOURS[i];
+    var price = t.price || 100;
     var sp = t.s ? '<div class="tc-sup">Support: ' + t.s + '</div>' : '';
     var bg = t.sold
       ? '<span class="badge-sold">SOLD OUT</span>'
-      : '<button class="btn-tix" onclick="openTix(' + i + ')">Tickets</button>';
+      : '<button class="btn-tix" onclick="openTix(' + i + ')">$' + price + ' Tickets</button>';
     h += '<div class="tc"><div class="tc-date">' + t.d + '<small>' + t.m + ' ' + t.y + '</small></div><div class="tc-info"><div class="tc-venue">' + t.v + '</div><div class="tc-city">' + t.c + '</div>' + sp + '</div>' + bg + '</div>';
   }
   el.innerHTML = h;
@@ -1606,10 +1793,11 @@ function bldDashTix() {
   var el = document.getElementById('dashTix'), h = '';
   for (var i = 0; i < TOURS.length; i++) {
     var t = TOURS[i];
+    var price = t.price || 100;
     var sp = t.s ? '<div class="dt-sp">Support: ' + t.s + '</div>' : '';
     var b = t.sold
       ? '<button class="btn-sold">SOLD OUT</button>'
-      : '<button class="btn-buy" onclick="openTix(' + i + ')">Buy $100</button>';
+      : '<button class="btn-buy" onclick="openTix(' + i + ')">Buy $' + price + '</button>';
     h += '<div class="dt-c"><div class="dt-d">' + t.d + '<small>' + t.m + '</small></div><div class="dt-inf"><div class="dt-v">' + t.v + '</div><div class="dt-ci">' + t.c + '</div>' + sp + '</div>' + b + '</div>';
   }
   el.innerHTML = h;
@@ -1619,22 +1807,26 @@ function openTix(i) {
   if (!usr) { showPg('su-page'); toast('Please sign in to purchase tickets.', 'info'); return; }
   if (isAdmin) { toast('Admin cannot purchase tickets.', 'err'); return; }
   curT = TOURS[i]; qty = 1;
+  var price = curT.price || 100;
   document.getElementById('mDate').textContent = curT.d + ' ' + curT.m + ' ' + curT.y;
   document.getElementById('mVen').textContent = curT.v;
   document.getElementById('mCit').textContent = curT.c;
   document.getElementById('mQ').textContent = '1';
-  document.getElementById('mTot').textContent = '$100.00';
+  document.getElementById('mTot').textContent = '$' + price.toFixed(2);
+  document.querySelector('.m-prc').innerHTML = '$' + price + ' <span style="font-size:0.9rem;color:#999999;font-family:\'Inter\',sans-serif">per ticket</span>';
   openOv('tixOv');
 }
 
 function chgQ(d) {
+  var price = curT.price || 100;
   qty = Math.max(1, Math.min(10, qty + d));
   document.getElementById('mQ').textContent = qty;
-  document.getElementById('mTot').textContent = '$' + (qty * 100).toFixed(2);
+  document.getElementById('mTot').textContent = '$' + (qty * price).toFixed(2);
 }
 
 function buyTix() {
-  var cost = qty * 100;
+  var price = curT.price || 100;
+  var cost = qty * price;
   if (bal < cost) {
     closeOv('tixOv');
     toast('Insufficient balance. Redirecting to deposit...', 'err');
@@ -1698,8 +1890,6 @@ function togPw(id, btn) {
 }
 
 function doSignup() {
-  console.log('🔄 Starting signup process...');
-  
   var first = document.getElementById('su-first').value.trim();
   var last = document.getElementById('su-last').value.trim();
   var email = document.getElementById('su-email').value.trim();
@@ -1728,7 +1918,6 @@ function doSignup() {
     code: otpCode,
     subject: 'Your Loop Tour Verification Code'
   }).then(function(response) {
-    console.log('✅ Email sent successfully:', response);
     setBtnLoading('suBtn', 'suTxt', 'suSpn', 'Create Account', false);
     document.getElementById('otpEmailDisp').textContent = email;
     ['o1','o2','o3','o4'].forEach(function(id) {
@@ -1744,7 +1933,6 @@ function doSignup() {
     toast('Verification code sent to your email!', 'ok');
   }).catch(function(err) {
     setBtnLoading('suBtn', 'suTxt', 'suSpn', 'Create Account', false);
-    console.error('❌ EmailJS Error:', err);
     var errMsg = err.text || err.message || 'Unknown error';
     toast('Failed to send email: ' + errMsg, 'err');
   });
@@ -1802,7 +1990,6 @@ function resendCode() {
     toast('New code sent!', 'ok'); 
     startOtpTimer();
   }).catch(function(err) {
-    console.error('Resend error:', err);
     toast('Failed to resend. Try again.', 'err');
   });
 }
@@ -1827,12 +2014,13 @@ function verifyOTP() {
         firstName: p.first, lastName: p.last, email: p.email,
         phone: p.phone, country: p.country,
         balance: 0, transactions: [],
+        pendingDeposits: [],
         isAdmin: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     }).then(function() {
       usr = { name: p.first + ' ' + p.last, first: p.first, email: p.email, uid: uid };
-      bal = 0; txs = [];
+      bal = 0; txs = []; pendingDeposits = [];
       isAdmin = false;
       if (otpInterval) clearInterval(otpInterval);
       setupDash();
@@ -1875,7 +2063,7 @@ function setupDash() {
 
 function doLogout() {
   auth.signOut().then(function() {
-    usr = null; bal = 0; txs = []; isAdmin = false;
+    usr = null; bal = 0; txs = []; pendingDeposits = []; isAdmin = false;
     showPg('home-page');
     toast('Logged out successfully.', 'info');
   });
@@ -1888,7 +2076,11 @@ function updBal() {
 
 function saveToDB() {
   if (!usr || !usr.uid) return;
-  db.collection('users').doc(usr.uid).update({ balance: bal, transactions: txs }).catch(function(e) { console.error(e); });
+  db.collection('users').doc(usr.uid).update({ 
+    balance: bal, 
+    transactions: txs,
+    pendingDeposits: pendingDeposits 
+  }).catch(function(e) { console.error(e); });
 }
 
 function openDep() {
@@ -1924,30 +2116,25 @@ function copyAddr() {
 }
 
 function confSent() {
-  var ld = document.getElementById('ldScr');
-  var ldT = document.getElementById('ldT');
-  var ldS = document.getElementById('ldS');
-  var ldFill = document.getElementById('ldFill');
-  ldT.textContent = 'Confirming Payment...';
-  ldS.textContent = 'Verifying your transaction on the blockchain';
-  ld.style.display = 'flex';
-  if (ldFill) ldFill.style.width = '0';
-  var pct = 0;
-  var prog = setInterval(function() {
-    pct += 100 / 15;
-    if (ldFill) ldFill.style.width = Math.min(pct, 100) + '%';
-  }, 1000);
-  setTimeout(function() {
-    clearInterval(prog);
-    ld.style.display = 'none';
-    bal += depAmtVal;
-    txs.unshift({ type: 'Deposit', desc: 'Bitcoin deposit', amt: depAmtVal, date: new Date().toISOString() });
-    saveToDB(); updBal();
-    showPg('dash-page'); showDash('tickets');
-    toast('Deposit successful! $' + depAmtVal.toFixed(2) + ' added.', 'ok');
-    depAmtVal = 0;
-    document.getElementById('depAmt').value = '';
-  }, 15000);
+  // Add to pending deposits instead of automatically adding to balance
+  var depositId = Date.now().toString();
+  pendingDeposits.push({
+    id: depositId,
+    amount: depAmtVal,
+    status: 'pending',
+    date: new Date().toISOString()
+  });
+  
+  // Save to database
+  saveToDB();
+  
+  // Show pending modal instead of success
+  closeOv('depPendingOv');
+  openOv('depPendingOv');
+  
+  // Reset deposit amount
+  depAmtVal = 0;
+  document.getElementById('depAmt').value = '';
 }
 
 function renderHist() {
